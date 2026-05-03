@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Abhay Nobles — Shaping Future Leaders</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+<title>[School Name] — Shaping Future Leaders</title>
 <meta name="description" content="A world-class institution dedicated to academic excellence, character development, and holistic growth.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -97,7 +97,7 @@ ul { list-style: none; }
   transition: all 0.4s ease;
 }
 #navbar.scrolled {
-  background: rgba(11, 22, 40,0.97);
+  background: rgba(255, 255, 255, 0.97);
   backdrop-filter: blur(20px);
   box-shadow: 0 2px 40px rgba(0,0,0,0.3);
 }
@@ -131,6 +131,8 @@ ul { list-style: none; }
 .dropdown a { display: block; padding: 0.6rem 1rem; color: rgba(255,255,255,0.8); font-size: 0.85rem; border-radius: 8px; transition: all 0.2s; }
 .dropdown a:hover { background: rgba(201,168,76,0.12); color: var(--gold-light); }
 .nav-cta { display: flex; align-items: center; gap: 0.75rem; }
+.nav-cta .btn { padding: 0.65rem 1.3rem; font-size: 0.82rem; min-height: 46px; line-height: 1; }
+.nav-cta .btn-outline { border-color: rgba(255,255,255,0.65); }
 .nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
 .nav-burger span { width: 24px; height: 2px; background: #000; transition: all 0.3s; display: block; }
 
@@ -144,6 +146,8 @@ ul { list-style: none; }
 .mobile-menu.open { right: 0; }
 .mobile-menu a { display: block; padding: 0.85rem 0; color: rgba(255,255,255,0.85); font-size: 1rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.08); transition: color 0.2s; }
 .mobile-menu a:hover { color: var(--gold-light); }
+.mobile-cta { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.mobile-menu .btn { display: flex; width: 100%; justify-content: center; align-items: center; text-align: center; }
 .mobile-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; cursor: pointer; color: #000; font-size: 1.5rem; }
 .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 998; opacity: 0; visibility: hidden; transition: all 0.3s; }
 .overlay.open { opacity: 1; visibility: visible; }
@@ -245,10 +249,8 @@ ul { list-style: none; }
   border-radius: 20px; position: relative; z-index: 1;
   background: linear-gradient(135deg, var(--navy-mid), var(--navy-light));
   display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
 }
 .about-main-img .img-placeholder { font-family: var(--font-display); font-size: 5rem; color: var(--gold); opacity: 0.3; }
-.about-main-img img { width: 100%; height: 100%; object-fit: cover; }
 .about-float-card {
   position: absolute; bottom: -2rem; right: -2rem; z-index: 2;
   background: var(--white); border-radius: 16px; padding: 1.5rem 2rem;
@@ -314,6 +316,7 @@ ul { list-style: none; }
 }
 .acad-result-title { font-family: var(--font-display); font-size: 1.5rem; color: var(--white); margin-bottom: 2rem; text-align: center; }
 .result-bars { display: grid; gap: 1.5rem; }
+.result-bar-item { }
 .result-bar-label { display: flex; justify-content: space-between; font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-bottom: 0.5rem; }
 .result-bar-track { height: 8px; background: rgba(255,255,255,0.08); border-radius: 50px; overflow: hidden; }
 .result-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 50px; width: 0; transition: width 1.5s cubic-bezier(0.25,0.46,0.45,0.94); }
@@ -365,7 +368,6 @@ ul { list-style: none; }
 .facility-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(11,22,40,0.12); border-color: rgba(201,168,76,0.2); }
 .facility-img { height: 180px; background: linear-gradient(135deg, var(--navy-mid), var(--navy-light)); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; position: relative; overflow: hidden; }
 .facility-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 60%, rgba(11,22,40,0.3)); }
-.facility-img img { width: 100%; height: 100%; object-fit: cover; }
 .facility-body { padding: 1.5rem; }
 .facility-title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; color: var(--navy); margin-bottom: 0.4rem; }
 .facility-desc { font-size: 0.83rem; color: var(--slate); line-height: 1.55; }
@@ -381,7 +383,6 @@ ul { list-style: none; }
   border-radius: 20px; padding: 3rem; margin-bottom: 4rem;
 }
 .principal-photo { width: 180px; height: 220px; background: linear-gradient(135deg, var(--navy-light), var(--navy-mid)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 5rem; flex-shrink: 0; }
-.principal-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 16px; }
 .principal-quote { font-family: var(--font-display); font-size: 1.4rem; font-style: italic; color: rgba(255,255,255,0.85); line-height: 1.5; margin-bottom: 1.25rem; }
 .principal-quote::before { content: '\201C'; color: var(--gold); font-size: 3rem; line-height: 0; vertical-align: -0.4em; margin-right: 0.25rem; }
 .principal-name { font-weight: 600; color: var(--gold-light); }
@@ -390,7 +391,6 @@ ul { list-style: none; }
 .teacher-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); padding: 2rem 1.5rem; text-align: center; transition: var(--transition); }
 .teacher-card:hover { border-color: rgba(201,168,76,0.25); transform: translateY(-4px); }
 .teacher-photo { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--gold-light)); margin: 0 auto 1.25rem; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; }
-.teacher-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 .teacher-name { font-family: var(--font-display); font-size: 1.1rem; color: var(--white); margin-bottom: 0.25rem; }
 .teacher-dept { font-size: 0.8rem; color: var(--gold); font-weight: 500; margin-bottom: 0.2rem; }
 .teacher-qual { font-size: 0.78rem; color: rgba(255,255,255,0.4); }
@@ -404,7 +404,6 @@ ul { list-style: none; }
 .life-card { border-radius: var(--radius); overflow: hidden; position: relative; cursor: pointer; }
 .life-card-img { background: linear-gradient(135deg, var(--navy-mid), var(--navy-light)); display: flex; align-items: center; justify-content: center; font-size: 3rem; transition: transform 0.5s ease; }
 .life-card:hover .life-card-img { transform: scale(1.05); }
-.life-card-img img { width: 100%; height: 100%; object-fit: cover; }
 .life-card-1 .life-card-img { height: 300px; }
 .life-card-2 .life-card-img { height: 200px; }
 .life-card-3 .life-card-img { height: 200px; }
@@ -427,7 +426,6 @@ ul { list-style: none; }
 .gallery-item { break-inside: avoid; margin-bottom: 1rem; border-radius: 10px; overflow: hidden; position: relative; cursor: pointer; }
 .gallery-item-img { background: linear-gradient(135deg, var(--navy-mid), var(--navy-light)); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; transition: transform 0.4s ease; }
 .gallery-item:hover .gallery-item-img { transform: scale(1.05); }
-.gallery-item-img img { width: 100%; height: 100%; object-fit: cover; }
 .gallery-item:nth-child(3n+1) .gallery-item-img { height: 200px; }
 .gallery-item:nth-child(3n+2) .gallery-item-img { height: 150px; }
 .gallery-item:nth-child(3n) .gallery-item-img { height: 250px; }
@@ -447,7 +445,6 @@ ul { list-style: none; }
 .testimonial-stars { color: var(--gold); font-size: 1.1rem; margin-bottom: 1.5rem; letter-spacing: 0.2em; }
 .testimonial-text { font-family: var(--font-display); font-size: 1.35rem; font-style: italic; color: var(--navy); line-height: 1.65; margin-bottom: 2rem; }
 .testimonial-author-photo { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--gold-light)); margin: 0 auto 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
-.testimonial-author-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 .testimonial-author-name { font-weight: 600; color: var(--navy); }
 .testimonial-author-role { font-size: 0.82rem; color: var(--slate); margin-top: 0.2rem; }
 .slider-controls { display: flex; justify-content: center; align-items: center; gap: 1.5rem; margin-top: 2.5rem; }
@@ -485,9 +482,6 @@ ul { list-style: none; }
 .contact-detail-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--slate); font-weight: 600; }
 .contact-detail-value { font-weight: 500; color: var(--navy); margin-top: 0.15rem; font-size: 0.95rem; }
 .map-placeholder { height: 250px; background: linear-gradient(135deg, var(--navy-mid), var(--navy-light)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin-top: 1.5rem; }
-.map-placeholder { overflow: hidden; }
-.map-placeholder iframe,
-.map-placeholder img { width: 100%; height: 100%; object-fit: cover; border: 0; }
 .contact-form-card { background: var(--white); border-radius: 20px; padding: 3rem; box-shadow: 0 8px 48px rgba(11,22,40,0.08); border: 1px solid rgba(201,168,76,0.1); }
 .contact-form-card h3 { font-family: var(--font-display); font-size: 1.75rem; color: var(--navy); margin-bottom: 0.5rem; }
 .contact-form-card p { font-size: 0.88rem; color: var(--slate); margin-bottom: 2rem; }
@@ -624,7 +618,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
       <img src="./WhatsApp Image 2026-04-29 at 9.44.23 PM.jpeg" alt="Shri Abhay Nobles School Logo" class="nav-logo-icon">
       <div class="nav-logo-text">
         <span class="nav-logo-name">Shri Abhay Nobles</span>
-        <span class="nav-logo-tag">Est. 2000 · RBSE   Affiliated</span>
+        <span class="nav-logo-tag">Est. [2000] · [RBSE]   Affiliated</span>
       </div>
     </a>
     <ul class="nav-links">
@@ -652,8 +646,8 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-cta">
-      <a href="#" class="btn btn-outline" style="padding: 0.6rem 1.25rem; font-size: 0.82rem;">Student Login</a>
-      <a href="#admission" class="btn btn-gold" style="padding: 0.6rem 1.25rem; font-size: 0.82rem;">Apply Now</a>
+      <a href="#" class="btn btn-outline">Student Login</a>
+      <a href="#admission" class="btn btn-gold">Apply Now</a>
     </div>
     <div class="nav-burger" onclick="toggleMenu()">
       <span></span><span></span><span></span>
@@ -673,9 +667,9 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
   <a href="#gallery" onclick="toggleMenu()">Gallery</a>
   <a href="#notices" onclick="toggleMenu()">News & Events</a>
   <a href="#contact" onclick="toggleMenu()">Contact</a>
-  <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem;">
-    <a href="#" class="btn btn-outline" style="justify-content: center;">Student Login</a>
-    <a href="#admission" class="btn btn-gold" style="justify-content: center;" onclick="toggleMenu()">Apply Now</a>
+  <div class="mobile-cta">
+    <a href="#" class="btn btn-outline">Student Login</a>
+    <a href="#admission" class="btn btn-gold" onclick="toggleMenu()">Apply Now</a>
   </div>
 </div>
 <div class="overlay" id="menuOverlay" onclick="toggleMenu()"></div>
@@ -685,16 +679,16 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
 ============================================= -->
 <div class="announcement-bar" style="margin-top: 80px;">
   <div class="marquee-track">
-    <div class="marquee-item"><span class="dot"></span>🎉 Admissions Open for 2026–27 Session — Apply Now</div>
-    <div class="marquee-item"><span class="dot"></span>📚 Board Results 2025: 98.5% Students Passed with Distinction</div>
-    <div class="marquee-item"><span class="dot"></span>🏆 Annual Sports Day — 22 september | All Are Welcome</div>
-    <div class="marquee-item"><span class="dot"></span>📝 Parent-Teacher Meeting Scheduled — 28 july</div>
-    <div class="marquee-item"><span class="dot"></span>🌟 Science Exhibition 2025 — Register Before 12 June</div>
-    <div class="marquee-item"><span class="dot"></span>🎉 Admissions Open for 2026–27 Session — Apply Now</div>
-    <div class="marquee-item"><span class="dot"></span>📚 Board Results 2025: 98.5% Students Passed with Distinction</div>
-    <div class="marquee-item"><span class="dot"></span>🏆 Annual Sports Day — 22 september | All Are Welcome</div>
-    <div class="marquee-item"><span class="dot"></span>📝 Parent-Teacher Meeting Scheduled — 28 july</div>
-    <div class="marquee-item"><span class="dot"></span>🌟 Science Exhibition 2025 — Register Before 12 june</div>
+    <div class="marquee-item"><span class="dot"></span>🎉 Admissions Open for 2025–26 Session — Apply Now</div>
+    <div class="marquee-item"><span class="dot"></span>📚 Board Results 2024: 98.5% Students Passed with Distinction</div>
+    <div class="marquee-item"><span class="dot"></span>🏆 Annual Sports Day — [Date] | All Are Welcome</div>
+    <div class="marquee-item"><span class="dot"></span>📝 Parent-Teacher Meeting Scheduled — [Date]</div>
+    <div class="marquee-item"><span class="dot"></span>🌟 Science Exhibition 2025 — Register Before [Date]</div>
+    <div class="marquee-item"><span class="dot"></span>🎉 Admissions Open for 2025–26 Session — Apply Now</div>
+    <div class="marquee-item"><span class="dot"></span>📚 Board Results 2024: 98.5% Students Passed with Distinction</div>
+    <div class="marquee-item"><span class="dot"></span>🏆 Annual Sports Day — [Date] | All Are Welcome</div>
+    <div class="marquee-item"><span class="dot"></span>📝 Parent-Teacher Meeting Scheduled — [Date]</div>
+    <div class="marquee-item"><span class="dot"></span>🌟 Science Exhibition 2025 — Register Before [Date]</div>
   </div>
 </div>
 
@@ -711,7 +705,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
       <div>
         <div class="hero-badge">
           <span></span>
-          Admissions Open 2026–27
+          Admissions Open 2025–26
         </div>
         <h1 class="display-xl text-white hero-heading reveal">
           Shaping<br>
@@ -757,7 +751,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
           <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(201,168,76,0.15);">
             <div style="font-size: 0.78rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;">Affiliated With</div>
             <div style="display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
-              <div style="background: rgba(255,255,255,0.07); border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.85rem; color: var(--gold-light); font-weight: 600;">RBSE Board</div>
+              <div style="background: rgba(255,255,255,0.07); border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.85rem; color: var(--gold-light); font-weight: 600;">[Board Name]</div>
               <div style="background: rgba(255,255,255,0.07); border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.85rem; color: var(--gold-light); font-weight: 600;">ISO Certified</div>
               <div style="background: rgba(255,255,255,0.07); border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.85rem; color: var(--gold-light); font-weight: 600;">NAAC Accredited</div>
             </div>
@@ -781,7 +775,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
       <div class="about-img-wrap reveal-left">
         <div class="about-accent-bar"></div>
         <div class="about-main-img">
-          <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=1000&q=80" alt="Students learning together in classroom">
+          <span style="font-size: 8rem; opacity: 0.2;">🏫</span>
         </div>
         <div class="about-float-card">
           <div class="about-float-icon">🏆</div>
@@ -795,7 +789,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
         <div class="section-label">Who We Are</div>
         <h2 class="display-md" style="margin-top: 0.75rem; color: var(--navy);">Building Excellence,<br><em style="font-style: italic; color: var(--gold);">One Student at a Time</em></h2>
         <div class="gold-line"></div>
-        <p class="body-lg" style="margin-top: 1.25rem;">Founded in 2000,Shri Abhay Nobles has been a beacon of academic brilliance and holistic development. Our world-class infrastructure, expert faculty, and a culture of discipline make us the most trusted institution in the region.</p>
+        <p class="body-lg" style="margin-top: 1.25rem;">Founded in [Year], [School Name] has been a beacon of academic brilliance and holistic development. Our world-class infrastructure, expert faculty, and a culture of discipline make us the most trusted institution in the region.</p>
         <p class="body-md" style="color: var(--slate); margin-bottom: 2rem;">We don't just educate — we inspire, empower, and elevate every child to achieve their highest potential while instilling values that last a lifetime.</p>
         <div class="about-pillars">
           <div class="about-pillar">
@@ -843,7 +837,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
   <div class="container">
     <div class="why-header reveal">
       <div class="section-label" style="justify-content: center;">Why Choose Us</div>
-      <h2 class="display-lg text-white" style="margin-top: 0.75rem;">The Abhay Nobles Advantage</h2>
+      <h2 class="display-lg text-white" style="margin-top: 0.75rem;">The [Short Name] Advantage</h2>
       <div class="gold-line center"></div>
       <p class="body-md" style="color: rgba(255,255,255,0.5); max-width: 540px; margin: 1rem auto 0;">Every aspect of our institution is designed to give your child the competitive edge they need to thrive in today's world.</p>
     </div>
@@ -852,7 +846,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
         <div class="why-card-num">01</div>
         <span class="why-card-icon">🖥️</span>
         <div class="why-card-title">Smart Classrooms</div>
-        <div class="why-card-desc">Well-planned classroom teaching with project-based activities, regular assessments, and focused mentor support for every student.</div>
+        <div class="why-card-desc">Interactive digital boards, AI-powered learning tools, and technology-integrated curriculum for modern education.</div>
       </div>
       <div class="why-card reveal reveal-delay-2">
         <div class="why-card-num">02</div>
@@ -910,7 +904,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
         <div class="section-label reveal">Academics</div>
         <h2 class="display-md reveal" style="color: var(--navy); margin-top: 0.75rem;">A Curriculum Built<br>for <em style="font-style: italic; color: var(--gold);">Tomorrow</em></h2>
         <div class="gold-line reveal"></div>
-        <p class="body-md reveal" style="color: var(--text-body); margin-top: 1rem;">Our NCERT affiliated curriculum integrates critical thinking, practical application, and global perspectives to prepare students for a fast-evolving world.</p>
+        <p class="body-md reveal" style="color: var(--text-body); margin-top: 1rem;">Our [Board] affiliated curriculum integrates critical thinking, practical application, and global perspectives to prepare students for a fast-evolving world.</p>
         <div class="class-tabs reveal" style="margin-top: 2rem;">
           <div class="class-tab active">Pre-Primary</div>
           <div class="class-tab">Primary (1–5)</div>
@@ -1002,7 +996,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
       <div class="section-label text-gold" style="justify-content: center;">Admissions</div>
       <h2 class="display-lg text-white" style="margin-top: 0.75rem;">Begin Your Child's<br><em style="font-style:italic; color: var(--gold-light);">Journey of Excellence</em></h2>
       <div class="gold-line center"></div>
-      <p style="color: rgba(255,255,255,0.5); max-width: 500px; margin: 1rem auto 0; font-size: 0.95rem;">Admissions for 2026–27 are open. Limited seats available — secure your child's future today.</p>
+      <p style="color: rgba(255,255,255,0.5); max-width: 500px; margin: 1rem auto 0; font-size: 0.95rem;">Admissions for 2025–26 are open. Limited seats available — secure your child's future today.</p>
     </div>
     <div class="admission-steps reveal">
       <div class="adm-step">
@@ -1104,45 +1098,59 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
     </div>
     <div class="facilities-grid">
       <div class="facility-card reveal reveal-delay-1">
-        <div class="facility-img"><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=900&q=80" alt="Students studying in a well-organized classroom"></div>
+        <div class="facility-img">🖥️</div>
         <div class="facility-body">
           <div class="facility-title">Smart Classrooms</div>
-          <div class="facility-desc">Spacious, well-ventilated classrooms with structured teaching, activity-based learning, and personal attention for strong academic growth.</div>
+          <div class="facility-desc">Digital boards, projectors, Wi-Fi enabled rooms with interactive learning tools for every class.</div>
         </div>
       </div>
       <div class="facility-card reveal reveal-delay-2">
-        <div class="facility-img"><img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=900&q=80" alt="Students doing science experiments in modern laboratory"></div>
+        <div class="facility-img">🔬</div>
         <div class="facility-body">
           <div class="facility-title">Science Laboratories</div>
           <div class="facility-desc">Fully equipped Physics, Chemistry, and Biology labs with modern instruments and safety standards.</div>
         </div>
       </div>
       <div class="facility-card reveal reveal-delay-3">
-        <div class="facility-img"><img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=80" alt="Computer laboratory with students at workstations"></div>
+        <div class="facility-img">💻</div>
         <div class="facility-body">
           <div class="facility-title">Computer Lab</div>
           <div class="facility-desc">Latest computers, high-speed internet, coding software, and experienced IT faculty for every student.</div>
         </div>
       </div>
       <div class="facility-card reveal reveal-delay-4">
-        <div class="facility-img"><img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=900&q=80" alt="School library with books and reading space"></div>
+        <div class="facility-img">📚</div>
         <div class="facility-body">
           <div class="facility-title">Digital Library</div>
           <div class="facility-desc">10,000+ books, e-library access, reading rooms, and research resources for all age groups.</div>
         </div>
       </div>
       <div class="facility-card reveal reveal-delay-1">
-        <div class="facility-img"><img src="https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&w=900&q=80" alt="Students practicing sports on school ground"></div>
+        <div class="facility-img">⚽</div>
         <div class="facility-body">
           <div class="facility-title">Sports Complex</div>
           <div class="facility-desc">Cricket, football, basketball, volleyball courts, athletics track, and indoor sports facilities.</div>
         </div>
       </div>
       <div class="facility-card reveal reveal-delay-2">
-        <div class="facility-img"><img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=900&q=80" alt="Comfortable and safe hostel room"></div>
+        <div class="facility-img">🏠</div>
         <div class="facility-body">
           <div class="facility-title">Hostel Facility</div>
           <div class="facility-desc">Separate boys & girls hostels with CCTV, healthy meals, study hours, and 24/7 warden supervision.</div>
+        </div>
+      </div>
+      <div class="facility-card reveal reveal-delay-3">
+        <div class="facility-img">🎭</div>
+        <div class="facility-body">
+          <div class="facility-title">Auditorium</div>
+          <div class="facility-desc">State-of-the-art 800-seat auditorium for cultural events, seminars, and annual functions.</div>
+        </div>
+      </div>
+      <div class="facility-card reveal reveal-delay-4">
+        <div class="facility-img">🍽️</div>
+        <div class="facility-body">
+          <div class="facility-title">Cafeteria</div>
+          <div class="facility-desc">Hygienic, nutritious meals by certified chefs. Vegetarian options, tuck shop, and clean water facilities.</div>
         </div>
       </div>
     </div>
@@ -1160,12 +1168,12 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
       <div class="gold-line center"></div>
     </div>
     <div class="principal-card reveal">
-      <div class="principal-photo"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=700&q=80" alt="School principal portrait"></div>
+      <div class="principal-photo">👩‍💼</div>
       <div>
-        <div class="principal-quote">Education is not the filling of a pail, but the lighting of a fire. At Abhay Nobles, we ignite the spark of curiosity, discipline, and ambition in every young mind that enters our gates.</div>
+        <div class="principal-quote">Education is not the filling of a pail, but the lighting of a fire. At [School Name], we ignite the spark of curiosity, discipline, and ambition in every young mind that enters our gates.</div>
         <div style="margin-top: 1.5rem;">
-          <div class="principal-name">Mr.Sambhoo singh</div>
-          <div class="principal-title">Principal, Abhay Nobles | M.Ed., Ph.D. in Education | 25+ Years Experience</div>
+          <div class="principal-name">[Principal Name]</div>
+          <div class="principal-title">Principal, [School Name] | M.Ed., Ph.D. in Education | 25+ Years Experience</div>
         </div>
         <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
           <a href="#" class="btn btn-gold" style="font-size: 0.85rem; padding: 0.6rem 1.5rem;">Read Full Message</a>
@@ -1175,26 +1183,26 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
     </div>
     <div class="teachers-grid">
       <div class="teacher-card reveal reveal-delay-1">
-        <div class="teacher-photo"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=300&q=80" alt="Science teacher portrait"></div>
-        <div class="teacher-name">Mr.Bhavesh suthar</div>
+        <div class="teacher-photo">👨‍🔬</div>
+        <div class="teacher-name">[Teacher Name]</div>
         <div class="teacher-dept">Head of Science</div>
         <div class="teacher-qual">M.Sc. Physics · 15 Years Exp.</div>
       </div>
       <div class="teacher-card reveal reveal-delay-2">
-        <div class="teacher-photo"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&q=80" alt="English teacher portrait"></div>
-        <div class="teacher-name">Mr.Kantilal</div>
+        <div class="teacher-photo">👩‍🎨</div>
+        <div class="teacher-name">[Teacher Name]</div>
         <div class="teacher-dept">English & Literature</div>
         <div class="teacher-qual">M.A. English · 12 Years Exp.</div>
       </div>
       <div class="teacher-card reveal reveal-delay-3">
-        <div class="teacher-photo"><img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=300&q=80" alt="Mathematics teacher portrait"></div>
-        <div class="teacher-name">Mr.Pandey</div>
+        <div class="teacher-photo">👨‍💻</div>
+        <div class="teacher-name">[Teacher Name]</div>
         <div class="teacher-dept">Mathematics & Coding</div>
         <div class="teacher-qual">M.Sc. Math · B.Tech · 10 Years</div>
       </div>
       <div class="teacher-card reveal reveal-delay-4">
-        <div class="teacher-photo"><img src="https://images.unsplash.com/photo-1601412436009-d964bd02edbc?auto=format&fit=crop&w=300&q=80" alt="Social studies teacher portrait"></div>
-        <div class="teacher-name">Mr.Nuton singh</div>
+        <div class="teacher-photo">👩‍🏫</div>
+        <div class="teacher-name">[Teacher Name]</div>
         <div class="teacher-dept">Social Studies</div>
         <div class="teacher-qual">M.A. History · 18 Years Exp.</div>
       </div>
@@ -1211,46 +1219,46 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
       <div class="section-label" style="justify-content: center;">Student Life</div>
       <h2 class="display-lg" style="color: var(--navy); margin-top: 0.75rem;">Beyond the <em style="font-style: italic; color: var(--gold);">Classroom</em></h2>
       <div class="gold-line center"></div>
-      <p style="color: var(--slate); max-width: 520px; margin: 1rem auto 0;">School life at Abhay Nobles is vibrant, enriching, and full of opportunities to discover passions and build friendships.</p>
+      <p style="color: var(--slate); max-width: 520px; margin: 1rem auto 0;">School life at [School Name] is vibrant, enriching, and full of opportunities to discover passions and build friendships.</p>
     </div>
     <div class="life-masonry">
       <div class="life-card life-card-1 reveal">
-        <div class="life-card-img"><img src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=900&q=80" alt="Students celebrating sports victory"></div>
+        <div class="life-card-img">🏆</div>
         <div class="life-card-overlay">
           <div class="life-card-title">Sports & Athletics</div>
           <div class="life-card-sub">National Level Champions · State Winners</div>
         </div>
       </div>
       <div class="life-card life-card-2 reveal reveal-delay-1">
-        <div class="life-card-img"><img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=900&q=80" alt="Students performing in cultural festival"></div>
+        <div class="life-card-img">🎭</div>
         <div class="life-card-overlay">
           <div class="life-card-title">Annual Cultural Festival</div>
           <div class="life-card-sub">Drama · Music · Dance · Art</div>
         </div>
       </div>
       <div class="life-card life-card-5 reveal reveal-delay-2">
-        <div class="life-card-img"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=900&q=80" alt="Educational tour and student travel experience"></div>
+        <div class="life-card-img">✈️</div>
         <div class="life-card-overlay">
           <div class="life-card-title">Educational Tours</div>
           <div class="life-card-sub">National & International Educational Trips</div>
         </div>
       </div>
       <div class="life-card life-card-3 reveal reveal-delay-1">
-        <div class="life-card-img"><img src="https://images.unsplash.com/photo-1532187643603-ba119ca4109e?auto=format&fit=crop&w=900&q=80" alt="Student science innovation activity"></div>
+        <div class="life-card-img">🔭</div>
         <div class="life-card-overlay">
           <div class="life-card-title">Science & Innovation</div>
           <div class="life-card-sub">Robotics · Olympiads · STEM Projects</div>
         </div>
       </div>
       <div class="life-card life-card-4 reveal reveal-delay-2">
-        <div class="life-card-img"><img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=900&q=80" alt="Music and arts practice by students"></div>
+        <div class="life-card-img">🎵</div>
         <div class="life-card-overlay">
           <div class="life-card-title">Arts & Music</div>
           <div class="life-card-sub">Painting · Classical Dance · Vocal Music</div>
         </div>
       </div>
       <div class="life-card life-card-6 reveal reveal-delay-3">
-        <div class="life-card-img"><img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=900&q=80" alt="Students participating in eco club activity"></div>
+        <div class="life-card-img">🌱</div>
         <div class="life-card-overlay">
           <div class="life-card-title">Eco & Social Clubs</div>
           <div class="life-card-sub">Green Campus · Community Service</div>
@@ -1267,7 +1275,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
   <div class="container">
     <div class="gallery-header reveal">
       <div class="section-label" style="justify-content: center;">Gallery</div>
-      <h2 class="display-lg text-white" style="margin-top: 0.75rem;">Life at <em style="font-style: italic; color: var(--gold-light);">Abhay Nobles</em></h2>
+      <h2 class="display-lg text-white" style="margin-top: 0.75rem;">Life at <em style="font-style: italic; color: var(--gold-light);">[Short Name]</em></h2>
       <div class="gold-line center"></div>
     </div>
     <div class="gallery-filters reveal">
@@ -1278,18 +1286,18 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
       <div class="gallery-filter" onclick="filterGallery(this, 'cultural')">Cultural</div>
     </div>
     <div class="gallery-masonry">
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1497486751825-1233686d5d80?auto=format&fit=crop&w=900&q=80" alt="School campus main building"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80" alt="Students receiving academic award"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=900&q=80" alt="Hands-on laboratory science session"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=900&q=80" alt="School football practice"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?auto=format&fit=crop&w=900&q=80" alt="Cultural dance performance"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=900&q=80" alt="Students reading in school library"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=900&q=80" alt="Students learning music instruments"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=900&q=80" alt="School event stage celebration"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1471295253337-3ceaaedca402?auto=format&fit=crop&w=900&q=80" alt="Students with sports medals"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1452860606245-08befc0ff44b?auto=format&fit=crop&w=900&q=80" alt="Children engaged in art and painting"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=900&q=80" alt="School bus transport facility"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1529634891602-4f5ff1f9f920?auto=format&fit=crop&w=900&q=80" alt="School fair and student participation"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
+      <div class="gallery-item"><div class="gallery-item-img">🏫</div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
+      <div class="gallery-item"><div class="gallery-item-img">🏆</div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
+      <div class="gallery-item"><div class="gallery-item-img">🔬</div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
+      <div class="gallery-item"><div class="gallery-item-img">⚽</div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
+      <div class="gallery-item"><div class="gallery-item-img">🎭</div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
+      <div class="gallery-item"><div class="gallery-item-img">📚</div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
+      <div class="gallery-item"><div class="gallery-item-img">🎵</div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
+      <div class="gallery-item"><div class="gallery-item-img">🌟</div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
+      <div class="gallery-item"><div class="gallery-item-img">🏅</div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
+      <div class="gallery-item"><div class="gallery-item-img">🎨</div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
+      <div class="gallery-item"><div class="gallery-item-img">🚌</div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
+      <div class="gallery-item"><div class="gallery-item-img">🎪</div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
     </div>
     <div style="text-align: center; margin-top: 3rem;">
       <a href="#" class="btn btn-outline btn-lg">View Full Gallery →</a>
@@ -1312,9 +1320,9 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
         <div class="testimonial-card">
           <div class="testimonial-inner">
             <div class="testimonial-stars">★★★★★</div>
-            <div class="testimonial-text">"Enrolling our daughter at Abhay Nobles was the best decision we ever made. The teachers are incredibly dedicated, the facilities are outstanding, and she has grown not just academically but as a person. This school truly cares."</div>
-            <div class="testimonial-author-photo"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="Parent testimonial profile photo"></div>
-            <div class="testimonial-author-name">Ms.Nisha </div>
+            <div class="testimonial-text">"Enrolling our daughter at [School Name] was the best decision we ever made. The teachers are incredibly dedicated, the facilities are outstanding, and she has grown not just academically but as a person. This school truly cares."</div>
+            <div class="testimonial-author-photo">👩</div>
+            <div class="testimonial-author-name">[Parent Name]</div>
             <div class="testimonial-author-role">Mother of Priya Sharma · Class 10</div>
           </div>
         </div>
@@ -1322,18 +1330,18 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
           <div class="testimonial-inner">
             <div class="testimonial-stars">★★★★★</div>
             <div class="testimonial-text">"My son went from a shy student to a confident national-level science olympiad winner. The faculty here doesn't just teach — they mentor, they motivate, and they believe in every child's potential."</div>
-            <div class="testimonial-author-photo"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="Parent testimonial profile photo"></div>
-            <div class="testimonial-author-name">Mr.vivek</div>
+            <div class="testimonial-author-photo">👨</div>
+            <div class="testimonial-author-name">[Parent Name]</div>
             <div class="testimonial-author-role">Father of Arjun Patel · Class 12</div>
           </div>
         </div>
         <div class="testimonial-card">
           <div class="testimonial-inner">
             <div class="testimonial-stars">★★★★★</div>
-            <div class="testimonial-text">"I am proud to be an alumnus of Abhay Nobles. The discipline, values, and education I received here shaped my entire career. I secured IIT Bombay rank 142 — and I owe it all to this wonderful institution."</div>
-            <div class="testimonial-author-photo"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80" alt="Alumni testimonial profile photo"></div>
-            <div class="testimonial-author-name">Mr.Lalit</div>
-            <div class="testimonial-author-role">IIT Bombay · Batch of 2011 · Alumni</div>
+            <div class="testimonial-text">"I am proud to be an alumnus of [School Name]. The discipline, values, and education I received here shaped my entire career. I secured IIT Bombay rank 142 — and I owe it all to this wonderful institution."</div>
+            <div class="testimonial-author-photo">🧑</div>
+            <div class="testimonial-author-name">[Alumni Name]</div>
+            <div class="testimonial-author-role">IIT Bombay · Batch of [Year] · Alumni</div>
           </div>
         </div>
       </div>
@@ -1366,7 +1374,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
         <div class="notice-list">
           <div class="notice-item">
             <div class="notice-date"><div class="notice-day">15</div><div class="notice-month">May</div></div>
-            <div><div class="notice-title">Admission form last date extended to 30th May 2026</div><div class="notice-cat">Admissions</div></div>
+            <div><div class="notice-title">Admission form last date extended to 30th May 2025</div><div class="notice-cat">Admissions</div></div>
           </div>
           <div class="notice-item">
             <div class="notice-date"><div class="notice-day">20</div><div class="notice-month">May</div></div>
@@ -1374,7 +1382,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
           </div>
           <div class="notice-item">
             <div class="notice-date"><div class="notice-day">25</div><div class="notice-month">May</div></div>
-            <div><div class="notice-title">Fee payment due date for Q2 — June 30, 2026</div><div class="notice-cat">Finance</div></div>
+            <div><div class="notice-title">Fee payment due date for Q2 — June 30, 2025</div><div class="notice-cat">Finance</div></div>
           </div>
         </div>
       </div>
@@ -1400,7 +1408,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
         <div class="notice-list">
           <div class="notice-item">
             <div class="notice-date"><div class="notice-day">10</div><div class="notice-month">May</div></div>
-            <div><div class="notice-title">Manmeet Suthar wins Gold at State Level Science Olympiad</div><div class="notice-cat">Achievement</div></div>
+            <div><div class="notice-title">[Student Name] wins Gold at State Level Science Olympiad</div><div class="notice-cat">Achievement</div></div>
           </div>
           <div class="notice-item">
             <div class="notice-date"><div class="notice-day">08</div><div class="notice-month">May</div></div>
@@ -1432,46 +1440,33 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
             <div class="contact-detail-icon">📍</div>
             <div>
               <div class="contact-detail-label">Address</div>
-              <div class="contact-detail-value">Near Ganpat Colony <br>Takhatgarh, Rajasthan, 306901 </div>
+              <div class="contact-detail-value">[Full School Address]<br>[City, State, PIN]</div>
             </div>
           </div>
           <div class="contact-detail">
             <div class="contact-detail-icon">📞</div>
             <div>
               <div class="contact-detail-label">Phone</div>
-              <div class="contact-detail-value">9928613702<br><span style="font-size: 0.83rem; color: var(--slate);">Mon–Sat: 9:00Am -2:00Pm</span></div>
+              <div class="contact-detail-value">[Phone Number]<br><span style="font-size: 0.83rem; color: var(--slate);">Mon–Sat: [Office Hours]</span></div>
             </div>
           </div>
           <div class="contact-detail">
             <div class="contact-detail-icon">💬</div>
             <div>
               <div class="contact-detail-label">WhatsApp</div>
-              <div class="contact-detail-value">+91 9928613702 </div>
+              <div class="contact-detail-value">[WhatsApp Number]</div>
             </div>
           </div>
           <div class="contact-detail">
             <div class="contact-detail-icon">✉️</div>
             <div>
               <div class="contact-detail-label">Email</div>
-              <div class="contact-detail-value">kunal4642m@gmail.com</div>
+              <div class="contact-detail-value">[Official Email]</div>
             </div>
           </div>
         </div>
-        <div class="map-placeholder">
-          <iframe
-            src="https://www.google.com/maps?q=Abhay%20Nobles%20School%2C%20Ganpat%20Colony%2C%20Takhatgarh%2C%20Pali%2C%20Rajasthan&output=embed"
-            title="Abhay Nobles School Location Map"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            allowfullscreen>
-          </iframe>
-        </div>
-        <p style="font-size: 0.8rem; color: var(--slate); margin-top: 0.75rem; text-align: center;">Abhay Nobles School · Ganpat Colony, Takhatgarh, Pali, Rajasthan</p>
-        <div style="text-align: center; margin-top: 0.75rem;">
-          <a href="https://maps.app.goo.gl/JiNJ5UtsD7LEBxrn7" target="_blank" rel="noopener noreferrer" class="btn btn-outline-dark" style="padding: 0.6rem 1.2rem; font-size: 0.82rem;">
-            Open Exact School Location
-          </a>
-        </div>
+        <div class="map-placeholder">🗺️</div>
+        <p style="font-size: 0.8rem; color: var(--slate); margin-top: 0.75rem; text-align: center;">← Replace this with your Google Maps embed</p>
       </div>
       <div class="reveal-right">
         <div class="contact-form-card">
@@ -1485,12 +1480,12 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
               </div>
               <div class="form-group">
                 <label>Phone Number</label>
-                <input type="tel" placeholder="+91 9928613702">
+                <input type="tel" placeholder="+91 00000 00000">
               </div>
             </div>
             <div class="form-group">
               <label>Email Address</label>
-              <input type="email" placeholder="kunal4642m@gmail.com">
+              <input type="email" placeholder="your@email.com">
             </div>
             <div class="form-group">
               <label>Subject</label>
@@ -1530,11 +1525,11 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
           <div class="nav-logo" style="margin-bottom: 1.25rem;">
             <img src="./WhatsApp Image 2026-04-29 at 9.44.23 PM.jpeg" alt="Shri Abhay Nobles School Logo" class="nav-logo-icon">
             <div class="nav-logo-text">
-              <span class="nav-logo-name">Abhay Nobles</span>
-              <span class="nav-logo-tag">Est. 2000 · Rbse Affiliated</span>
+              <span class="nav-logo-name">[School Name]</span>
+              <span class="nav-logo-tag">Est. [Year] · [Board] Affiliated</span>
             </div>
           </div>
-          <p>Nurturing excellence, building character, and inspiring futures since 2000. A place where every child discovers their potential and every dream finds its wings.</p>
+          <p>Nurturing excellence, building character, and inspiring futures since [Year]. A place where every child discovers their potential and every dream finds its wings.</p>
           <div class="footer-social">
             <a href="#" class="social-btn" title="Facebook">f</a>
             <a href="#" class="social-btn" title="Instagram">📷</a>
@@ -1584,7 +1579,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
   </div>
   <div class="container">
     <div class="footer-bottom">
-      <p>© 2025 Abhay Nobles. All rights reserved. | Designed with ♥ for Excellence</p>
+      <p>© 2025 [School Name]. All rights reserved. | Designed with ♥ for Excellence</p>
       <div class="footer-bottom-links">
         <a href="#">Privacy</a>
         <a href="#">Terms</a>
@@ -1598,7 +1593,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
 <!-- Floating WhatsApp Button -->
 <div class="whatsapp-float">
   <a href="https://wa.me/[WhatsApp Number]" class="whatsapp-btn" target="_blank">
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3./9928613702"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
   <div class="whatsapp-label">Chat with us on WhatsApp</div>
 </div>

@@ -499,16 +499,73 @@ ul { list-style: none; }
 #faculty { background: var(--navy); }
 .faculty-header { text-align: center; margin-bottom: 4rem; }
 .principal-card {
-  display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: center;
-  background: rgba(255,255,255,0.04); border: 1px solid rgba(201,168,76,0.2);
-  border-radius: 20px; padding: 3rem; margin-bottom: 4rem;
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  gap: 3rem;
+  align-items: center;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 20px;
+  padding: 3rem;
+  margin-bottom: 4rem;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
-.principal-photo { width: 180px; height: 220px; background: linear-gradient(135deg, var(--navy-light), var(--navy-mid)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 5rem; flex-shrink: 0; }
+.principal-content {
+  min-width: 0;
+  max-width: 100%;
+}
+.principal-photo {
+  width: 180px;
+  max-width: 100%;
+  height: 220px;
+  background: linear-gradient(135deg, var(--navy-light), var(--navy-mid));
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+  flex-shrink: 0;
+}
 .principal-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 16px; }
-.principal-quote { font-family: var(--font-display); font-size: 1.4rem; font-style: italic; color: rgba(255,255,255,0.85); line-height: 1.5; margin-bottom: 1.25rem; }
+.principal-quote {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-style: italic;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+  overflow-wrap: anywhere;
+  word-wrap: break-word;
+  hyphens: auto;
+}
 .principal-quote::before { content: '\201C'; color: var(--gold); font-size: 3rem; line-height: 0; vertical-align: -0.4em; margin-right: 0.25rem; }
 .principal-name { font-weight: 600; color: var(--gold-light); }
-.principal-title { font-size: 0.85rem; color: rgba(255,255,255,0.45); margin-top: 0.2rem; }
+.principal-title {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.45);
+  margin-top: 0.2rem;
+  overflow-wrap: anywhere;
+  word-wrap: break-word;
+  line-height: 1.45;
+}
+.principal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  max-width: 100%;
+}
+.principal-actions .btn {
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: center;
+  white-space: normal;
+  text-align: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
 .teachers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
 .teacher-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); padding: 2rem 1.5rem; text-align: center; transition: var(--transition); }
 .teacher-card:hover { border-color: rgba(201,168,76,0.25); transform: translateY(-4px); }
@@ -701,8 +758,9 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
   .admission-bottom { grid-template-columns: 1fr; }
   .facilities-grid { grid-template-columns: repeat(2, 1fr); }
   .contact-grid { grid-template-columns: 1fr; }
-  .principal-card { grid-template-columns: 1fr; }
-  .principal-photo { margin: 0 auto; }
+  .principal-card { grid-template-columns: 1fr; gap: 1.75rem; padding: 2rem; }
+  .principal-photo { margin: 0 auto; width: min(180px, 100%); height: auto; aspect-ratio: 180 / 220; }
+  .principal-quote { font-size: 1.2rem; }
   .life-masonry { grid-template-columns: 1fr 1fr; }
   .notices-grid { grid-template-columns: 1fr; }
 }
@@ -725,7 +783,13 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
   .life-masonry { grid-template-columns: 1fr; }
   .result-highlights { grid-template-columns: 1fr 1fr; }
 }
+@media (max-width: 640px) {
+  .principal-actions { flex-direction: column; align-items: stretch; }
+  .principal-actions .btn { width: 100%; flex: none; }
+}
 @media (max-width: 480px) {
+  .principal-card { padding: 1.35rem; gap: 1.35rem; }
+  .principal-quote { font-size: 1.05rem; }
   .container, .container-sm { padding-left: max(1.25rem, env(safe-area-inset-left)); padding-right: max(1.25rem, env(safe-area-inset-right)); }
   .hero-btns { flex-direction: column; }
   .btn-lg { width: 100%; justify-content: center; }
@@ -1284,15 +1348,15 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
     </div>
     <div class="principal-card reveal">
       <div class="principal-photo"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=700&q=80" alt="School principal portrait"></div>
-      <div>
+      <div class="principal-content">
         <div class="principal-quote">Education is not the filling of a pail, but the lighting of a fire. At Abhay Nobles, we ignite the spark of curiosity, discipline, and ambition in every young mind that enters our gates.</div>
         <div style="margin-top: 1.5rem;">
           <div class="principal-name">Mr.Sambhoo singh</div>
           <div class="principal-title">Principal, Abhay Nobles | M.Ed., Ph.D. in Education | 25+ Years Experience</div>
         </div>
-        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-          <a href="#" class="btn btn-gold" style="font-size: 0.85rem; padding: 0.6rem 1.5rem;">Read Full Message</a>
-          <a href="#contact" class="btn btn-outline" style="font-size: 0.85rem; padding: 0.6rem 1.5rem;">Book Appointment</a>
+        <div class="principal-actions">
+          <a href="#" class="btn btn-gold" style="font-size: 0.85rem; padding: 0.65rem 1.25rem;">Read Full Message</a>
+          <a href="#contact" class="btn btn-outline" style="font-size: 0.85rem; padding: 0.65rem 1.25rem;">Book Appointment</a>
         </div>
       </div>
     </div>

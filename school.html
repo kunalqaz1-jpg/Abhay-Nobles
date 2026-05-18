@@ -605,15 +605,41 @@ ul { list-style: none; }
 .gallery-filter.active, .gallery-filter:hover { background: linear-gradient(135deg, var(--gold), var(--gold-light)); border-color: transparent; color: var(--navy); }
 .gallery-masonry { columns: 4; gap: 1rem; column-fill: balance; }
 .gallery-item { break-inside: avoid; margin-bottom: 1rem; border-radius: 10px; overflow: hidden; position: relative; cursor: pointer; }
-.gallery-item-img { background: linear-gradient(135deg, var(--navy-mid), var(--navy-light)); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; transition: transform 0.4s ease; }
-.gallery-item:hover .gallery-item-img { transform: scale(1.05); }
+.gallery-item-img { background: linear-gradient(135deg, var(--navy-mid), var(--navy-light)); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; transition: transform 0.35s ease, box-shadow 0.25s ease; }
 .gallery-item-img img { width: 100%; height: 100%; object-fit: cover; }
 .gallery-item:nth-child(3n+1) .gallery-item-img { height: 200px; }
 .gallery-item:nth-child(3n+2) .gallery-item-img { height: 150px; }
 .gallery-item:nth-child(3n) .gallery-item-img { height: 250px; }
-.gallery-item-overlay { position: absolute; inset: 0; background: rgba(11,22,40,0.6); opacity: 0; display: flex; align-items: center; justify-content: center; transition: opacity 0.3s; }
-.gallery-item:hover .gallery-item-overlay { opacity: 1; }
-.gallery-zoom { width: 44px; height: 44px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 1.2rem; }
+.gallery-item:hover .gallery-item-img { transform: scale(1.02); box-shadow: 0 0 0 2px rgba(201,168,76,0.45); }
+.gallery-item[hidden] { display: none !important; }
+
+/* Gallery lightbox (home + full gallery page) */
+.gallery-lightbox {
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(5, 10, 20, 0.94);
+  display: none; align-items: center; justify-content: center;
+  padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+  cursor: zoom-out;
+}
+.gallery-lightbox.open { display: flex; }
+.gallery-lightbox-inner {
+  position: relative; max-width: min(1200px, 96vw); max-height: 90vh;
+  cursor: default;
+}
+.gallery-lightbox-inner img {
+  max-width: min(1200px, 96vw); max-height: 88vh; width: auto; height: auto;
+  object-fit: contain; border-radius: 10px; box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+}
+.gallery-lightbox-close {
+  position: absolute; top: -2.75rem; right: 0;
+  width: 44px; height: 44px; border: none; border-radius: 50%;
+  background: rgba(255,255,255,0.12); color: var(--white); font-size: 1.5rem;
+  line-height: 1; cursor: pointer; transition: background 0.2s;
+}
+.gallery-lightbox-close:hover { background: rgba(255,255,255,0.22); }
+@media (max-width: 600px) {
+  .gallery-lightbox-close { top: auto; bottom: -3rem; right: 50%; transform: translateX(50%); }
+}
 
 /* =============================================
    TESTIMONIALS
@@ -833,7 +859,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
           <a href="#facilities">Facilities</a>
           <a href="#faculty">Faculty</a>
           <a href="#student-life">Student Life</a>
-          <a href="#gallery">Gallery</a>
+          <a href="gallery.html">Gallery</a>
         </div>
       </li>
       <li><a href="#notices">News</a></li>
@@ -857,7 +883,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
   <a href="#facilities" onclick="toggleMenu()">Facilities</a>
   <a href="#faculty" onclick="toggleMenu()">Faculty</a>
   <a href="#student-life" onclick="toggleMenu()">Student Life</a>
-  <a href="#gallery" onclick="toggleMenu()">Gallery</a>
+  <a href="gallery.html" onclick="toggleMenu()">Gallery</a>
   <a href="#notices" onclick="toggleMenu()">News & Events</a>
   <a href="#contact" onclick="toggleMenu()">Contact</a>
   <div class="mobile-menu-cta">
@@ -1454,32 +1480,33 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
   <div class="container">
     <div class="gallery-header reveal">
       <div class="section-label" style="justify-content: center;">Gallery</div>
-      <h2 class="display-lg text-white" style="margin-top: 0.75rem;">Life at <em style="font-style: italic; color: var(--gold-light);">Abhay Nobles</em></h2>
+      <h2 class="display-lg text-white" style="margin-top: 0.75rem;">Photo <em style="font-style: italic; color: var(--gold-light);">Gallery</em></h2>
+      <p class="text-white" style="margin-top: 0.75rem; opacity: 0.75; font-size: 0.95rem; max-width: 28rem; margin-left: auto; margin-right: auto; line-height: 1.55;">A few pictures from our school — campus, classroom, events, sports, and activities.</p>
       <div class="gold-line center"></div>
     </div>
     <div class="gallery-filters reveal">
-      <div class="gallery-filter active" onclick="filterGallery(this, 'all')">All Photos</div>
+      <div class="gallery-filter active" onclick="filterGallery(this, 'all')">All</div>
       <div class="gallery-filter" onclick="filterGallery(this, 'campus')">Campus</div>
       <div class="gallery-filter" onclick="filterGallery(this, 'events')">Events</div>
       <div class="gallery-filter" onclick="filterGallery(this, 'sports')">Sports</div>
-      <div class="gallery-filter" onclick="filterGallery(this, 'cultural')">Cultural</div>
+      <div class="gallery-filter" onclick="filterGallery(this, 'cultural')">Art &amp; culture</div>
     </div>
-    <div class="gallery-masonry">
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1497486751825-1233686d5d80?auto=format&fit=crop&w=900&q=80" alt="School campus main building"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80" alt="Students receiving academic award"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=900&q=80" alt="Hands-on laboratory science session"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=900&q=80" alt="School football practice"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?auto=format&fit=crop&w=900&q=80" alt="Cultural dance performance"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=900&q=80" alt="Students reading in school library"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=900&q=80" alt="Students learning music instruments"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=900&q=80" alt="School event stage celebration"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1471295253337-3ceaaedca402?auto=format&fit=crop&w=900&q=80" alt="Students with sports medals"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1452860606245-08befc0ff44b?auto=format&fit=crop&w=900&q=80" alt="Children engaged in art and painting"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=900&q=80" alt="School bus transport facility"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
-      <div class="gallery-item"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1529634891602-4f5ff1f9f920?auto=format&fit=crop&w=900&q=80" alt="School fair and student participation"></div><div class="gallery-item-overlay"><div class="gallery-zoom">🔍</div></div></div>
+    <div class="gallery-masonry" id="homeGalleryMasonry">
+      <div class="gallery-item" data-category="campus" role="button" tabindex="0" aria-label="Enlarge photo"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1497486751825-1233686d5d80?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="School building" loading="lazy"></div></div>
+      <div class="gallery-item" data-category="events" role="button" tabindex="0" aria-label="Enlarge photo"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Prize distribution" loading="lazy"></div></div>
+      <div class="gallery-item" data-category="campus" role="button" tabindex="0" aria-label="Enlarge photo"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Science lab" loading="lazy"></div></div>
+      <div class="gallery-item" data-category="sports" role="button" tabindex="0" aria-label="Enlarge photo"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Sports on the ground" loading="lazy"></div></div>
+      <div class="gallery-item" data-category="cultural" role="button" tabindex="0" aria-label="Enlarge photo"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Dance programme" loading="lazy"></div></div>
+      <div class="gallery-item" data-category="campus" role="button" tabindex="0" aria-label="Enlarge photo"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Library reading" loading="lazy"></div></div>
+      <div class="gallery-item" data-category="cultural" role="button" tabindex="0" aria-label="Enlarge photo"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Music class" loading="lazy"></div></div>
+      <div class="gallery-item" data-category="events" role="button" tabindex="0" aria-label="Enlarge photo"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="School function" loading="lazy"></div></div>
+      <div class="gallery-item" data-category="sports" role="button" tabindex="0" aria-label="Enlarge photo"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1471295253337-3ceaaedca402?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Sports day" loading="lazy"></div></div>
+      <div class="gallery-item" data-category="cultural" role="button" tabindex="0" aria-label="Enlarge photo"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1452860606245-08befc0ff44b?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Drawing activity" loading="lazy"></div></div>
+      <div class="gallery-item" data-category="campus" role="button" tabindex="0" aria-label="Enlarge photo"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="School bus" loading="lazy"></div></div>
+      <div class="gallery-item" data-category="events" role="button" tabindex="0" aria-label="Enlarge photo"><div class="gallery-item-img"><img src="https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Outdoor school activity" loading="lazy"></div></div>
     </div>
-    <div style="text-align: center; margin-top: 3rem;">
-      <a href="#" class="btn btn-outline btn-lg">View Full Gallery →</a>
+    <div style="text-align: center; margin-top: 2.5rem;">
+      <a href="gallery.html" class="btn btn-outline btn-lg">More photos</a>
     </div>
   </div>
 </section>
@@ -1738,7 +1765,7 @@ footer { background: #060e1e; border-top: 1px solid rgba(201,168,76,0.15); }
             <a href="#admission">Admissions</a>
             <a href="#facilities">Facilities</a>
             <a href="#faculty">Faculty</a>
-            <a href="#gallery">Gallery</a>
+            <a href="gallery.html">Gallery</a>
             <a href="#contact">Contact Us</a>
           </div>
         </div>
@@ -1836,6 +1863,11 @@ function toggleMenu() {
 
 document.addEventListener('keydown', function (e) {
   if (e.key !== 'Escape') return;
+  const lb = document.getElementById('galleryLightbox');
+  if (lb && lb.classList.contains('open')) {
+    closeGalleryLightbox();
+    return;
+  }
   const menu = document.getElementById('mobileMenu');
   if (!menu || !menu.classList.contains('open')) return;
   toggleMenu();
@@ -1931,8 +1963,53 @@ autoSlideInterval = setInterval(() => changeSlide(1), 5000);
 function filterGallery(btn, category) {
   document.querySelectorAll('.gallery-filter').forEach(f => f.classList.remove('active'));
   btn.classList.add('active');
-  // In a real implementation, this would filter gallery items
+  document.querySelectorAll('.gallery-item[data-category]').forEach(item => {
+    const cat = item.getAttribute('data-category');
+    item.toggleAttribute('hidden', category !== 'all' && cat !== category);
+  });
+  document.querySelectorAll('.gallery-category-block[data-category]').forEach(block => {
+    const cat = block.getAttribute('data-category');
+    block.toggleAttribute('hidden', category !== 'all' && cat !== category);
+  });
 }
+
+function openGalleryLightbox(src, alt) {
+  const lb = document.getElementById('galleryLightbox');
+  const img = document.getElementById('galleryLightboxImg');
+  if (!lb || !img) return;
+  img.src = src;
+  img.alt = alt || '';
+  lb.classList.add('open');
+  lb.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+function closeGalleryLightbox() {
+  const lb = document.getElementById('galleryLightbox');
+  const img = document.getElementById('galleryLightboxImg');
+  if (!lb) return;
+  lb.classList.remove('open');
+  lb.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  if (img) { img.src = ''; img.alt = ''; }
+}
+
+document.addEventListener('click', function (e) {
+  const item = e.target.closest('.gallery-item');
+  if (!item || e.target.closest('#galleryLightbox')) return;
+  if (!item.closest('#gallery, #galleryPageMain')) return;
+  const im = item.querySelector('img');
+  if (!im || !im.src) return;
+  openGalleryLightbox(im.currentSrc || im.src, im.getAttribute('alt') || '');
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const item = e.target.closest('.gallery-item');
+  if (!item || !item.closest('#gallery, #galleryPageMain')) return;
+  if (e.key === ' ') e.preventDefault();
+  const im = item.querySelector('img');
+  if (!im || !im.src) return;
+  openGalleryLightbox(im.currentSrc || im.src, im.getAttribute('alt') || '');
+});
 
 // =============================================
 // FORM HANDLERS
@@ -1988,5 +2065,12 @@ window.addEventListener('scroll', () => {
 // =============================================
 // Already handled via CSS animation
 </script>
+
+<div id="galleryLightbox" class="gallery-lightbox" role="dialog" aria-modal="true" aria-label="Enlarged photo" aria-hidden="true" onclick="if(event.target===this)closeGalleryLightbox()">
+  <div class="gallery-lightbox-inner" onclick="event.stopPropagation()">
+    <button type="button" class="gallery-lightbox-close" onclick="closeGalleryLightbox()" aria-label="Close">&times;</button>
+    <img id="galleryLightboxImg" src="" alt="">
+  </div>
+</div>
 </body>
 </html>

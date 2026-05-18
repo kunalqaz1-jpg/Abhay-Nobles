@@ -697,7 +697,7 @@ table.data-table {
         <p class="help-link">Need assistance? <a href="mailto:office@abhaynobles.edu">Help / Contact School</a></p>
       </div>
     </form>
-    <p class="login-hint">Demo: use any Admission Number and password (minimum 4 characters).</p>
+    <p class="login-hint">Demo login: use <strong>AN2024-0842</strong> and password <strong>1234</strong>.</p>
   </div>
 </div>
 
@@ -750,6 +750,9 @@ table.data-table {
 (function () {
   const SESSION_KEY = 'abhay_student_session';
   const REMEMBER_ID = 'abhay_student_remember_id';
+  const API_OVERRIDE_KEY = 'abhay_api_base';
+  const API_BASE_CANDIDATES = resolveApiBases();
+  let ACTIVE_API_BASE = API_BASE_CANDIDATES[0];
 
   const NAV = [
     { id: 'profile', label: 'Profile', icon: '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' },
@@ -776,6 +779,8 @@ table.data-table {
     ]
   };
 
+  let currentDashboardData = null;
+
   const elLogin = document.getElementById('login-view');
   const elDash = document.getElementById('dashboard-view');
   const sidebarNav = document.getElementById('sidebarNav');
@@ -794,9 +799,78 @@ table.data-table {
     sessionStorage.removeItem(SESSION_KEY);
   }
 
-  function showDashboard(session) {
-    demoStudent.admission = session.studentId || '—';
-    document.getElementById('welcomeName').textContent = session.name.split(' ')[0] || session.name;
+  function resolveApiBases() {
+    const params = new URLSearchParams(window.location.search);
+    const fromQuery = params.get('api');
+    const fromStorage = localStorage.getItem(API_OVERRIDE_KEY);
+    const fromWindow = window.ABHAY_API_BASE;
+    const fromOrigin = window.location.origin && window.location.origin.startsWith('http')
+      ? window.location.origin.replace(/\/$/, '') + '/api'
+      : null;
+
+    const candidates = [
+      fromQuery,
+      fromWindow,
+      fromStorage,
+      fromOrigin,
+      'http://127.0.0.1:5000/api',
+      'http://localhost:5000/api'
+    ]
+      .filter(Boolean)
+      .map(function (value) { return String(value).replace(/\/$/, ''); })
+      .filter(function (value, index, array) { return array.indexOf(value) === index; });
+
+    if (fromQuery) localStorage.setItem(API_OVERRIDE_KEY, String(fromQuery).replace(/\/$/, ''));
+    return candidates.length ? candidates : ['http://127.0.0.1:5000/api'];
+  }
+
+  async function apiFetch(path, init) {
+    let lastError = null;
+
+    for (const base of API_BASE_CANDIDATES) {
+      try {
+        const response = await fetch(base + path, init);
+        const contentType = response.headers.get('content-type') || '';
+
+        if (contentType.includes('text/html')) {
+          lastError = new Error('Received HTML instead of API JSON from ' + base);
+          continue;
+        }
+
+        ACTIVE_API_BASE = base;
+        localStorage.setItem(API_OVERRIDE_KEY, base);
+        return response;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+
+    throw lastError || new Error('Unable to reach the student portal server.');
+  }
+
+  async function loginStudent(studentId, password) {
+    const response = await apiFetch('/students/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ studentId, password })
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || 'Student login failed.');
+    return data;
+  }
+
+  async function fetchStudentDashboard(studentId) {
+    const response = await apiFetch('/students/' + encodeURIComponent(studentId) + '/dashboard');
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || 'Failed to load student dashboard.');
+    return data;
+  }
+
+  async function showDashboard(session) {
+    currentDashboardData = await fetchStudentDashboard(session.studentId);
+    const student = currentDashboardData.student;
+    demoStudent.admission = student.studentId || '—';
+    document.getElementById('welcomeName').textContent = (student.fullName || session.name).split(' ')[0] || session.name;
 
     NAV.forEach((item, i) => {
       const b = document.createElement('button');
@@ -808,7 +882,17 @@ table.data-table {
       sidebarNav.appendChild(b);
     });
 
-    renderAllPanels(session);
+    renderAllPanels(session, currentDashboardData);
+    setTimeout(() => {
+      const student = currentDashboardData?.student || {};
+      hydrateStudentPanels(
+        currentDashboardData,
+        { fees: student.fees || { history: [] } },
+        currentDashboardData?.attendance?.summary || {},
+        currentDashboardData?.homework || null,
+        currentDashboardData?.result || null,
+      );
+    }, 0);
     elLogin.style.display = 'none';
     elDash.classList.add('is-visible');
     selectPanel('profile', sidebarNav.querySelector('.nav-item'));
@@ -825,9 +909,22 @@ table.data-table {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function renderAllPanels(session) {
-    const sname = demoStudent.name;
-    const PH = demoStudent;
+  function renderAllPanels(session, dashboardData) {
+    const student = dashboardData.student;
+    const attendance = dashboardData.attendance || {};
+    const attendanceSummary = attendance.summary || { percent: '0%', daysPresent: 0, daysAbsent: 0, weeklyRows: [], calendar: [], monthLabel: 'May 2026' };
+    const latestHomework = dashboardData.homework;
+    const latestResult = dashboardData.result;
+    const sname = student.fullName || demoStudent.name;
+    const PH = {
+      name: sname,
+      klass: 'Class ' + student.className.replace('-', ' — Section '),
+      roll: student.rollNo,
+      photo: student.photo || demoStudent.photo,
+      admission: student.studentId,
+      parents: (student.parents || []).map(function (p) { return [p.relation, p.name, p.phone]; }),
+      fees: student.fees || demoStudent.fees
+    };
 
     contentWrap.innerHTML = `
       <!-- Profile -->
@@ -851,7 +948,7 @@ table.data-table {
               <dl><dt>Full Name</dt><dd>${sname}</dd></dl>
               <dl><dt>Class / Section</dt><dd>${PH.klass}</dd></dl>
               <dl><dt>Roll Number</dt><dd>${PH.roll}</dd></dl>
-              <dl><dt>Admission No.</dt><dd>${demoStudent.admission}</dd></dl>
+              <dl><dt>Admission No.</dt><dd>${PH.admission}</dd></dl>
             </div>
             <h3 style="margin:1rem 0 .75rem">Parent / Guardian</h3>
             <div class="profile-fields">
@@ -1046,6 +1143,73 @@ table.data-table {
           </div>
         </div>
       </section>
+
+      <!-- Attendance Section -->
+      <section id="attendance-section" class="panel-section">
+        <div class="section-heading">
+          <h2>Attendance</h2>
+        </div>
+        <div>
+          <button onclick="viewPreviousAttendance()">View Previous Month's Attendance</button>
+        </div>
+      </section>
+
+      <!-- Homework Section -->
+      <section id="homework-section" class="panel-section">
+        <div class="section-heading">
+          <h2>Homework</h2>
+        </div>
+        <div>
+          <button onclick="downloadHomework()">Download Homework</button>
+        </div>
+      </section>
+
+      <!-- Result Section -->
+      <section id="result-section" class="panel-section">
+        <div class="section-heading">
+          <h2>Results</h2>
+        </div>
+        <div>
+          <button onclick="downloadResult()">Download Result (Image/PDF)</button>
+        </div>
+      </section>
+
+      <!-- Study Material Section -->
+      <section id="study-material-section" class="panel-section">
+        <div class="section-heading">
+          <h2>Study Material</h2>
+        </div>
+        <div>
+          <button onclick="viewStudyMaterial()">View Study Material</button>
+          <button onclick="downloadStudyMaterial()">Download Study Material</button>
+        </div>
+      </section>
+
+      <!-- Time Table Section -->
+      <section id="timetable-section" class="panel-section">
+        <div class="section-heading">
+          <h2>Time Table</h2>
+        </div>
+        <div>
+          <button onclick="viewClassTimetable()">View Class Timetable</button>
+          <button onclick="viewExamTimetable()">View Exam Timetable</button>
+        </div>
+      </section>
+
+      <!-- Profile Photo Update -->
+      <section id="profile-photo-section" class="panel-section">
+        <div class="section-heading">
+          <h2>Profile Photo</h2>
+        </div>
+        <div class="profile-photo-wrap">
+          <div class="profile-avatar-ring">
+            <div class="profile-avatar-crop">
+              <img src="path/to/default-photo.jpg" alt="Profile Photo" id="profile-photo">
+            </div>
+          </div>
+          <input type="file" id="upload-photo" accept="image/*" onchange="updateProfilePhoto()">
+        </div>
+      </section>
     `;
 
     document.getElementById('btnPdf').addEventListener('click', downloadDemoPdf);
@@ -1057,7 +1221,20 @@ table.data-table {
     });
   }
 
-  function calendarCells() {
+  function calendarCells(calendarData) {
+    if (calendarData && calendarData.length) {
+      let html = '';
+      const startPad = Number(calendarData[0].offset || 0);
+      for (let i = 0; i < startPad; i++) html += '<div class="cal-cell weekend"></div>';
+      calendarData.forEach(function (item, index) {
+        let cls = 'cal-cell ';
+        const wday = (startPad + index) % 7;
+        if (wday === 0 || wday === 6 || item.status === 'muted') cls += 'weekend';
+        else cls += item.status === 'absent' ? 'absent' : 'present';
+        html += '<div class="' + cls + '">' + item.day + '</div>';
+      });
+      return html;
+    }
     // May 2026 starts on Friday → 5 empty cells before 1 when week starts Sunday
     const startPad = 5;
     let html = '';
@@ -1072,6 +1249,137 @@ table.data-table {
       html += '<div class="' + cls.trim() + '">' + d + '</div>';
     }
     return html;
+  }
+
+  function hydrateStudentPanels(dashboardData, profile, attendanceSummary, latestHomework, latestResult) {
+    const attendanceStats = document.querySelectorAll('#panel-attendance .stat-chip');
+    if (attendanceStats.length >= 3) {
+      const firstFigure = attendanceStats[0].querySelector('figure');
+      const firstText = attendanceStats[0].querySelector('span');
+      if (firstFigure) firstFigure.textContent = attendanceSummary.percent || '0%';
+      if (firstText) firstText.textContent = (attendanceSummary.monthLabel || 'Current Month') + ' — Present';
+      const secondFigure = attendanceStats[1].querySelector('figure');
+      const thirdFigure = attendanceStats[2].querySelector('figure');
+      if (secondFigure) secondFigure.textContent = String(attendanceSummary.daysPresent || 0);
+      if (thirdFigure) thirdFigure.textContent = String(attendanceSummary.daysAbsent || 0);
+    }
+
+    const attendanceCards = document.querySelectorAll('#panel-attendance .dashboard-card');
+    if (attendanceCards.length >= 2) {
+      const tableBody = attendanceCards[0].querySelector('.data-table tbody');
+      if (tableBody) {
+        tableBody.innerHTML = (attendanceSummary.weeklyRows || []).map(function (row) {
+          return '<tr><td>' + row.week + '</td><td>' + row.present + '</td><td>' + row.absent + '</td></tr>';
+        }).join('') || '<tr><td colspan="3">No attendance records available yet.</td></tr>';
+      }
+
+      const calendarTitle = attendanceCards[1].querySelector('h3');
+      if (calendarTitle) calendarTitle.textContent = 'Calendar — ' + (attendanceSummary.monthLabel || 'Current Month');
+
+      const calendar = attendanceCards[1].querySelector('.calendar-mini');
+      if (calendar) {
+        calendar.innerHTML =
+          ['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(function (day) {
+            return '<div class="calendar-mini-head">' + day + '</div>';
+          }).join('') +
+          calendarCells(attendanceSummary.calendar || []);
+      }
+    }
+
+    const homeworkBody = document.querySelector('#panel-homework .data-table tbody');
+    if (homeworkBody) {
+      homeworkBody.innerHTML = latestHomework
+        ? '<tr><td>' + latestHomework.subject + '</td><td>' + latestHomework.title + '</td><td>' + latestHomework.dueDate + '</td><td><span class="tag pending">Assigned</span></td></tr>'
+        : '<tr><td colspan="4">No homework uploaded yet.</td></tr>';
+    }
+
+    const resultCard = document.querySelector('#panel-results .dashboard-card');
+    if (resultCard) {
+      const heading = resultCard.querySelector('h3');
+      if (heading) heading.textContent = latestResult ? latestResult.title : 'Latest Result';
+      const tbody = resultCard.querySelector('.data-table tbody');
+      if (tbody) {
+        tbody.innerHTML = latestResult
+          ? '<tr><td>' + latestResult.subject + '</td><td>100</td><td>Uploaded</td><td>' + (latestResult.examType === 'yearly' ? 'Yearly' : latestResult.examType === 'half-yearly' ? 'Half-Yearly' : 'Unit Test') + '</td></tr>'
+          : '<tr><td colspan="4">No result uploaded yet.</td></tr>';
+      }
+      const summary = resultCard.querySelector('p');
+      if (summary) summary.innerHTML = '<strong>File:</strong> ' + (latestResult ? latestResult.fileName : 'Not available yet');
+    }
+
+    const feeCards = document.querySelectorAll('#panel-fees .dashboard-card');
+    if (feeCards.length >= 2) {
+      const statusTag = feeCards[0].querySelector('.tag');
+      if (statusTag) {
+        statusTag.textContent = profile.fees?.currentTermStatus || 'Pending';
+        statusTag.className = 'tag ' + (profile.fees?.currentTermStatus === 'Paid' ? 'ok' : 'pending');
+      }
+
+      const paragraphs = feeCards[0].querySelectorAll('p');
+      if (paragraphs.length >= 3) {
+        paragraphs[1].textContent = profile.fees?.currentTermNote || 'No fee note available.';
+        paragraphs[2].textContent = 'Next Due: ₹ ' + (profile.fees?.nextDueAmount || '0') + ' — ' + (profile.fees?.nextDueLabel || 'TBD');
+      }
+
+      const feeBody = feeCards[1].querySelector('.data-table tbody');
+      if (feeBody) {
+        feeBody.innerHTML = (profile.fees?.history || []).map(function (item) {
+          return '<tr><td>' + item.period + '</td><td>₹ ' + item.amount + '</td><td><span class="tag ' + (item.status === 'Paid' ? 'ok' : 'pending') + '">' + item.status + '</span></td></tr>';
+        }).join('') || '<tr><td colspan="3">No fee history available.</td></tr>';
+      }
+    }
+
+    const noticesCard = document.querySelector('#panel-notices .dashboard-card');
+    if (noticesCard) {
+      noticesCard.innerHTML = (dashboardData.notices || []).length
+        ? dashboardData.notices.map(function (item) {
+            return '<div class="msg-item"><span class="msg-meta">' + (item.createdAt || '') + ' · <strong>' + (item.teacherName || 'School') + '</strong></span>' + item.title + '<br><small>' + item.description + '</small></div>';
+          }).join('')
+        : '<div class="msg-item">No notices published yet.</div>';
+    }
+
+    const materialBody = document.querySelector('#panel-material .data-table tbody');
+    if (materialBody) {
+      materialBody.innerHTML = (dashboardData.materials || []).length
+        ? dashboardData.materials.map(function (item) {
+            const actionLabel = item.videoUrl ? 'Open video' : (item.fileName ? 'View file' : 'Open');
+            const actionTarget = item.videoUrl || item.fileName || item.title;
+            return '<tr><td>' + item.title + '</td><td>' + item.resourceType + '</td><td><button type="button" class="forgot-link" style="border:none;color:var(--navy-light)" onclick="demoOpen(\'' + String(actionTarget).replace(/'/g, "\\'") + '\')">' + actionLabel + '</button></td></tr>';
+          }).join('')
+        : '<tr><td colspan="3">No study material uploaded yet.</td></tr>';
+    }
+
+    const timetableCard = document.querySelector('#panel-timetable .dashboard-card');
+    if (timetableCard) {
+      timetableCard.innerHTML = (dashboardData.timetable || []).length
+        ? dashboardData.timetable.map(function (item) {
+            return '<div class="timetable-slot"><span>Period ' + item.period + ' · ' + item.time + '</span><strong>' + item.subject + '</strong></div>';
+          }).join('')
+        : '<div class="msg-item">No timetable has been published for your class yet.</div>';
+    }
+
+    const eventCards = document.querySelectorAll('#panel-events .dashboard-card');
+    if (eventCards.length >= 2) {
+      eventCards[0].innerHTML = (dashboardData.events || []).length
+        ? dashboardData.events.map(function (item) {
+            return '<div style="margin-bottom:.85rem;font-size:.9rem"><strong>' + item.title + '</strong><br><span style="color:var(--slate);font-size:.82rem">' + item.eventDate + ' · ' + (item.description || 'School event') + '</span></div>';
+          }).join('')
+        : '<div class="msg-item">No upcoming events yet.</div>';
+      eventCards[1].innerHTML = '<h3>School-wide</h3>' + ((dashboardData.events || []).length
+        ? dashboardData.events.map(function (item) {
+            return '<div class="msg-item"><span class="msg-meta">' + (item.teacherName || 'School') + '</span>' + item.title + '</div>';
+          }).join('')
+        : '<div class="msg-item">School announcements will appear here.</div>');
+    }
+
+    const messagesCard = document.querySelector('#panel-messages .dashboard-card');
+    if (messagesCard) {
+      messagesCard.innerHTML = (dashboardData.messages || []).length
+        ? dashboardData.messages.map(function (item) {
+            return '<div class="msg-item"><span class="msg-meta">' + (item.teacherName || 'School') + ' · ' + (item.sentAt || '') + '</span><strong>' + item.subject + '</strong><br>' + item.body + '</div>';
+          }).join('')
+        : '<div class="msg-item">No messages for you right now.</div>';
+    }
   }
 
   window.demoOpen = function(label) {
@@ -1115,7 +1423,7 @@ table.data-table {
   document.getElementById('closeForgot').addEventListener('click', () => forgotModal.classList.remove('open'));
   forgotModal.addEventListener('click', e => { if (e.target === forgotModal) forgotModal.classList.remove('open'); });
 
-  document.getElementById('student-login-form').addEventListener('submit', function (e) {
+  document.getElementById('student-login-form').addEventListener('submit', async function (e) {
     e.preventDefault();
     const id = document.getElementById('studentId').value.trim();
     const pass = document.getElementById('password').value;
@@ -1127,8 +1435,14 @@ table.data-table {
     if (remember) localStorage.setItem(REMEMBER_ID, id);
     else localStorage.removeItem(REMEMBER_ID);
 
-    persistSession(id, demoStudent.name);
-    showDashboard({ studentId: id, name: demoStudent.name });
+    try {
+      const loginData = await loginStudent(id, pass);
+      persistSession(id, loginData.student.fullName);
+      await showDashboard({ studentId: id, name: loginData.student.fullName });
+    } catch (error) {
+      const fallbackMessage = 'Login failed. Make sure backend server is running on ' + ACTIVE_API_BASE + '.';
+      alert(error instanceof Error ? error.message : fallbackMessage);
+    }
   });
 
   const remembered = localStorage.getItem(REMEMBER_ID);
@@ -1154,7 +1468,9 @@ table.data-table {
   const existing = loadSession();
   if (existing && existing.studentId) {
     document.getElementById('rememberMe').checked = !!localStorage.getItem(REMEMBER_ID);
-    showDashboard({ studentId: existing.studentId, name: existing.name || demoStudent.name });
+    showDashboard({ studentId: existing.studentId, name: existing.name || demoStudent.name }).catch(function () {
+      clearSession();
+    });
   }
 })();
 </script>

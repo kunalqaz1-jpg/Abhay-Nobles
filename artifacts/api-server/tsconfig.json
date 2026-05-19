@@ -2,7 +2,6 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src",
     "types": ["node"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -13,5 +12,5 @@
       "@workspace/db/schema": ["../../lib/db/src/schema/index.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "api"]
 }

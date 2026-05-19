@@ -106,9 +106,11 @@ const SHARED = {
 
 async function buildAll() {
   const distDir = path.resolve(artifactDir, "dist");
-  // .vercel/output is the Vercel Build Output API directory — Vercel reads this
-  // instead of scanning the project for functions heuristically.
-  const vercelOutputDir = path.resolve(artifactDir, ".vercel/output");
+  // Vercel Build Output API: when a Root Directory is configured in the Vercel
+  // dashboard, .vercel/output MUST be at the repository root (two levels up from
+  // artifacts/api-server/), NOT inside the Root Directory itself.
+  const repoRoot = path.resolve(artifactDir, "../../");
+  const vercelOutputDir = path.resolve(repoRoot, ".vercel/output");
 
   await rm(distDir, { recursive: true, force: true });
   await rm(vercelOutputDir, { recursive: true, force: true });

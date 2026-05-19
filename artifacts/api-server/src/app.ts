@@ -1,4 +1,4 @@
-import express, { type Express } from "express";
+import express, { type Express, type Request, type Response, type NextFunction } from "express";
 import cors from "cors";
 import { pinoHttp } from "pino-http";
 import type { IncomingMessage, ServerResponse } from "http";
@@ -32,6 +32,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
+
+app.use((_req: Request, res: Response) => {
+  res.status(404).json({ error: "Not Found", message: "The requested route does not exist." });
+});
+
+app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
+  const status = err instanceof Error && "status" in err ? (err as Record<string, unknown>)["status"] as number : 500;
+  const message = err instanceof Error ? err.message : "An unexpected error occurred.";
+
+  logger.error(
+    { err, method: req.method, url: req.url, status },
+    "Unhandled request error",
+  );
+
+  res.status(status ?? 500).json({
+    error: status === 500 ? "Internal Server Error" : "Error",
+    message: process.env["NODE_ENV"] === "production" ? "An unexpected error occurred." : message,
+  });
+});
 
 connectMongo().catch((err) => logger.error({ err }, "MongoDB connection error"));
 

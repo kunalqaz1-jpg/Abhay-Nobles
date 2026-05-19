@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { build as esbuild } from "esbuild";
 import esbuildPluginPino from "esbuild-plugin-pino";
-import { rm, mkdir, writeFile } from "node:fs/promises";
+import { rm } from "node:fs/promises";
 
 // Plugins (e.g. 'esbuild-plugin-pino') may use `require` to resolve dependencies
 globalThis.require = createRequire(import.meta.url);
@@ -85,7 +85,7 @@ const EXTERNAL = [
   "electron",
 ];
 
-const CJS_BANNER = {
+const ESM_BANNER = {
   js: `import { createRequire as __bannerCrReq } from 'node:module';
 import __bannerPath from 'node:path';
 import __bannerUrl from 'node:url';
@@ -96,79 +96,40 @@ globalThis.__dirname = __bannerPath.dirname(globalThis.__filename);
   `,
 };
 
-const SHARED = {
-  platform: "node",
-  bundle: true,
-  format: "esm",
-  external: EXTERNAL,
-  banner: CJS_BANNER,
-};
-
 async function buildAll() {
   const distDir = path.resolve(artifactDir, "dist");
-  // Vercel Build Output API: when a Root Directory is configured in the Vercel
-  // dashboard, .vercel/output MUST be at the repository root (two levels up from
-  // artifacts/api-server/), NOT inside the Root Directory itself.
-  const repoRoot = path.resolve(artifactDir, "../../");
-  const vercelOutputDir = path.resolve(repoRoot, ".vercel/output");
-
   await rm(distDir, { recursive: true, force: true });
-  await rm(vercelOutputDir, { recursive: true, force: true });
 
-  // 1. Main server bundle — used for local dev / self-hosted deployments
+  // 1. Main server bundle (ESM) — used for local dev / self-hosted deployments
   await esbuild({
-    ...SHARED,
     entryPoints: [path.resolve(artifactDir, "src/index.ts")],
+    platform: "node",
+    bundle: true,
+    format: "esm",
     outdir: distDir,
     outExtension: { ".js": ".mjs" },
     logLevel: "info",
     sourcemap: "linked",
+    external: EXTERNAL,
+    banner: ESM_BANNER,
     plugins: [
       esbuildPluginPino({ transports: ["pino-pretty"] }),
     ],
   });
 
-  // 2. Vercel serverless handler — compiled by esbuild (no @vercel/node TypeScript step)
-  //    Placed in the Build Output API structure so Vercel knows exactly what to deploy.
-  const funcDir = path.resolve(vercelOutputDir, "functions/api/index.func");
-  await mkdir(funcDir, { recursive: true });
-
+  // 2. Vercel serverless handler (CommonJS .js) — pre-compiled by esbuild so
+  //    @vercel/node picks it up as plain JavaScript with no TypeScript step.
+  //    CJS is the safest format for Vercel function detection.
   await esbuild({
-    ...SHARED,
     entryPoints: [path.resolve(artifactDir, "src/app.ts")],
-    outfile: path.resolve(funcDir, "index.mjs"),
+    platform: "node",
+    bundle: true,
+    format: "cjs",
+    outfile: path.resolve(artifactDir, "api/index.js"),
     logLevel: "info",
     sourcemap: false,
+    external: EXTERNAL,
   });
-
-  // Tell Vercel how to launch the function
-  await writeFile(
-    path.resolve(funcDir, ".vc-config.json"),
-    JSON.stringify(
-      {
-        runtime: "nodejs20.x",
-        handler: "index.mjs",
-        launcherType: "Nodejs",
-        shouldAddHelpers: false,
-        shouldAddSourcemapSupport: false,
-      },
-      null,
-      2,
-    ),
-  );
-
-  // Vercel Build Output API routing config — all requests go to the function
-  await writeFile(
-    path.resolve(vercelOutputDir, "config.json"),
-    JSON.stringify(
-      {
-        version: 3,
-        routes: [{ src: "/(.*)", dest: "/api/index" }],
-      },
-      null,
-      2,
-    ),
-  );
 }
 
 buildAll().catch((err) => {

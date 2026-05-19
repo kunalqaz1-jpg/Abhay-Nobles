@@ -2,5 +2,9 @@
   "version": 2,
   "framework": null,
   "installCommand": "cd ../.. && pnpm install",
-  "buildCommand": "node ./build.mjs"
+  "buildCommand": "node ./build.mjs",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/api/index" }
+  ]
 }

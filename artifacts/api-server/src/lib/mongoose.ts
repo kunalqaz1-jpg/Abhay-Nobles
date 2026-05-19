@@ -3,6 +3,10 @@ import { logger } from "./logger";
 
 let connected = false;
 
+export function isMongoConnected(): boolean {
+  return connected;
+}
+
 export async function connectMongo(): Promise<void> {
   if (connected) return;
 

@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import {
   Student,
   Teacher,
@@ -10,9 +10,22 @@ import {
   StudyMaterial,
   TimetableRow,
   Event,
+  isMongoConnected,
 } from "../lib/mongoose";
 
 const router = Router();
+
+function requireMongo(_req: Request, res: Response, next: NextFunction): void {
+  if (!isMongoConnected()) {
+    res.status(503).json({
+      message: "Database unavailable. Set MONGODB_URI to enable data routes.",
+    });
+    return;
+  }
+  next();
+}
+
+router.use(requireMongo);
 
 function sanitizeStudent(s: Record<string, unknown>) {
   const { password: _pw, ...safe } = s;

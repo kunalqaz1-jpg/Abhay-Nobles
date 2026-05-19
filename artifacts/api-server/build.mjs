@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { build as esbuild } from "esbuild";
 import esbuildPluginPino from "esbuild-plugin-pino";
-import { rm } from "node:fs/promises";
+import { rm, mkdir, writeFile } from "node:fs/promises";
 
 // Plugins (e.g. 'esbuild-plugin-pino') may use `require` to resolve dependencies
 globalThis.require = createRequire(import.meta.url);
@@ -106,9 +106,14 @@ const SHARED = {
 
 async function buildAll() {
   const distDir = path.resolve(artifactDir, "dist");
-  await rm(distDir, { recursive: true, force: true });
+  // .vercel/output is the Vercel Build Output API directory — Vercel reads this
+  // instead of scanning the project for functions heuristically.
+  const vercelOutputDir = path.resolve(artifactDir, ".vercel/output");
 
-  // Main server entry — used for local dev and self-hosted deployments
+  await rm(distDir, { recursive: true, force: true });
+  await rm(vercelOutputDir, { recursive: true, force: true });
+
+  // 1. Main server bundle — used for local dev / self-hosted deployments
   await esbuild({
     ...SHARED,
     entryPoints: [path.resolve(artifactDir, "src/index.ts")],
@@ -117,21 +122,51 @@ async function buildAll() {
     logLevel: "info",
     sourcemap: "linked",
     plugins: [
-      // pino relies on workers to handle logging, instead of externalizing it we use a plugin to handle it
       esbuildPluginPino({ transports: ["pino-pretty"] }),
     ],
   });
 
-  // Vercel serverless handler — exports the Express app as default.
-  // Built as plain JS so @vercel/node never needs to compile TypeScript.
-  // In production pino runs without a transport (no worker threads needed).
+  // 2. Vercel serverless handler — compiled by esbuild (no @vercel/node TypeScript step)
+  //    Placed in the Build Output API structure so Vercel knows exactly what to deploy.
+  const funcDir = path.resolve(vercelOutputDir, "functions/api/index.func");
+  await mkdir(funcDir, { recursive: true });
+
   await esbuild({
     ...SHARED,
     entryPoints: [path.resolve(artifactDir, "src/app.ts")],
-    outfile: path.resolve(artifactDir, "api/index.mjs"),
+    outfile: path.resolve(funcDir, "index.mjs"),
     logLevel: "info",
     sourcemap: false,
   });
+
+  // Tell Vercel how to launch the function
+  await writeFile(
+    path.resolve(funcDir, ".vc-config.json"),
+    JSON.stringify(
+      {
+        runtime: "nodejs20.x",
+        handler: "index.mjs",
+        launcherType: "Nodejs",
+        shouldAddHelpers: false,
+        shouldAddSourcemapSupport: false,
+      },
+      null,
+      2,
+    ),
+  );
+
+  // Vercel Build Output API routing config — all requests go to the function
+  await writeFile(
+    path.resolve(vercelOutputDir, "config.json"),
+    JSON.stringify(
+      {
+        version: 3,
+        routes: [{ src: "/(.*)", dest: "/api/index" }],
+      },
+      null,
+      2,
+    ),
+  );
 }
 
 buildAll().catch((err) => {

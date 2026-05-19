@@ -32,6 +32,18 @@ function sanitizeStudent(s: Record<string, unknown>) {
   return safe;
 }
 
+// Student authentication
+router.post("/auth/student", async (req, res) => {
+  const { studentId, password } = req.body as { studentId: string; password: string };
+  if (!studentId || !password) {
+    return res.status(400).json({ message: "studentId and password are required." });
+  }
+  const student = await Student.findOne({ studentId }).lean() as Record<string, unknown> | null;
+  if (!student) return res.status(401).json({ message: "Invalid Student ID or password." });
+  if (student["password"] !== password) return res.status(401).json({ message: "Invalid Student ID or password." });
+  return res.json(sanitizeStudent(student));
+});
+
 router.get("/students", async (_req, res) => {
   const students = await Student.find().sort({ className: 1, rollNo: 1 }).lean();
   res.json(students.map((s) => sanitizeStudent(s as Record<string, unknown>)));
@@ -119,6 +131,57 @@ router.get("/attendance/student/:studentId/latest", async (req, res) => {
     (e) => e.studentId === req.params["studentId"],
   );
   return res.json(entry ? { record, entry } : null);
+});
+
+// Full attendance summary for a student
+router.get("/attendance/student/:studentId/summary", async (req, res) => {
+  const student = await Student.findOne({ studentId: req.params["studentId"] }).lean() as Record<string, unknown> | null;
+  if (!student) return res.json({ present: 0, absent: 0, total: 0, pct: 0, history: [] });
+
+  const records = await ClassAttendance.find({
+    className: student["className"],
+    "entries.studentId": req.params["studentId"],
+  })
+    .sort({ date: -1 })
+    .limit(60)
+    .lean() as Array<{ date: string; teacherName: string; entries: Array<{ studentId: string; status: string; remark: string }> }>;
+
+  let present = 0;
+  let absent = 0;
+  const history: Array<{ date: string; status: string; remark: string }> = [];
+
+  for (const rec of records) {
+    const entry = rec.entries.find((e) => e.studentId === req.params["studentId"]);
+    if (entry) {
+      if (entry.status === "present") present++;
+      else absent++;
+      history.push({ date: rec.date, status: entry.status, remark: entry.remark || "" });
+    }
+  }
+
+  const total = present + absent;
+  const pct = total > 0 ? Math.round((present / total) * 100) : 0;
+  return res.json({ present, absent, total, pct, history });
+});
+
+// All homework for a class (recent 20)
+router.get("/homework/class/:className", async (req, res) => {
+  const records = await Homework.find({ className: req.params["className"] })
+    .sort({ createdAt: -1 })
+    .limit(20)
+    .lean();
+  return res.json(records);
+});
+
+// All results for a class (recent 20)
+router.get("/results/class/:className", async (req, res) => {
+  const { rollNo } = req.query as Record<string, string>;
+  const query: Record<string, unknown> = { className: req.params["className"] };
+  if (rollNo) {
+    query["$or"] = [{ targetRollNo: { $exists: false } }, { targetRollNo: "" }, { targetRollNo: rollNo }];
+  }
+  const records = await Result.find(query).sort({ createdAt: -1 }).limit(20).lean();
+  return res.json(records);
 });
 
 router.post("/homework", async (req, res) => {

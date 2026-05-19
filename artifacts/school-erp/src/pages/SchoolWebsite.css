@@ -1,0 +1,606 @@
+/* =============================================
+   SCHOOL WEBSITE — scoped under .school-website
+============================================= */
+
+.school-website {
+  font-family: 'Outfit', sans-serif;
+  color: #334155;
+  background: #FAF7F0;
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.school-website *, .school-website *::before, .school-website *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.school-website img { max-width: 100%; display: block; }
+.school-website a { text-decoration: none; color: inherit; }
+.school-website ul { list-style: none; }
+.school-website input, .school-website select, .school-website textarea, .school-website button {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* CSS Variables */
+.school-website {
+  --navy: #0B1628;
+  --navy-mid: #132040;
+  --navy-light: #1E3060;
+  --gold: #C9A84C;
+  --gold-light: #E2C97E;
+  --gold-pale: #F5E9C8;
+  --cream: #FAF7F0;
+  --white: #FFFFFF;
+  --slate: #64748B;
+  --slate-light: #94A3B8;
+  --text-dark: #0F1C35;
+  --text-body: #334155;
+  --glass: rgba(255,255,255,0.07);
+  --glass-border: rgba(201,168,76,0.2);
+  --shadow-gold: 0 8px 48px rgba(201,168,76,0.15);
+  --shadow-navy: 0 8px 48px rgba(11,22,40,0.18);
+  --radius: 16px;
+  --radius-sm: 8px;
+  --transition: 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'Outfit', sans-serif;
+}
+
+/* =============================================
+   TYPOGRAPHY
+============================================= */
+.school-website .display-xl { font-family: var(--font-display); font-size: clamp(2.8rem, 6vw, 5.5rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; }
+.school-website .display-lg { font-family: var(--font-display); font-size: clamp(2.2rem, 4.5vw, 4rem); font-weight: 600; line-height: 1.15; }
+.school-website .display-md { font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 600; line-height: 1.2; }
+.school-website .section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 0.75rem; }
+.school-website .section-label::before { content: ''; width: 32px; height: 1.5px; background: var(--gold); flex-shrink: 0; }
+.school-website .body-lg { font-size: 1.125rem; line-height: 1.7; }
+.school-website .body-md { font-size: 1rem; line-height: 1.65; }
+
+/* =============================================
+   UTILITIES
+============================================= */
+.school-website .container { max-width: 1280px; margin: 0 auto; padding-left: max(2rem, env(safe-area-inset-left)); padding-right: max(2rem, env(safe-area-inset-right)); width: 100%; }
+.school-website .container-sm { max-width: 900px; margin: 0 auto; padding-left: max(2rem, env(safe-area-inset-left)); padding-right: max(2rem, env(safe-area-inset-right)); width: 100%; }
+.school-website .section-pad { padding: 100px 0; }
+.school-website .section-pad-lg { padding: 140px 0; }
+.school-website .text-center { text-align: center; }
+.school-website .text-gold { color: var(--gold); }
+.school-website .text-white { color: var(--white); }
+.school-website .text-navy { color: var(--navy); }
+.school-website .gold-line { width: 60px; height: 2px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); margin: 1.25rem 0; }
+.school-website .gold-line.center { margin: 1.25rem auto; }
+
+/* =============================================
+   BUTTONS
+============================================= */
+.school-website .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.85rem 2rem; border-radius: 50px; font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: var(--transition); border: 2px solid transparent; white-space: nowrap; touch-action: manipulation; }
+.school-website .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--navy); }
+.school-website .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(201,168,76,0.4); }
+.school-website .btn-outline { background: transparent; border-color: rgba(255,255,255,0.5); color: var(--white); }
+.school-website .btn-outline:hover { background: rgba(255,255,255,0.12); border-color: var(--white); transform: translateY(-2px); }
+.school-website .btn-outline-dark { background: transparent; border-color: var(--navy); color: var(--navy); }
+.school-website .btn-outline-dark:hover { background: var(--navy); color: var(--white); transform: translateY(-2px); }
+.school-website .btn-lg { padding: 1rem 2.5rem; font-size: 1rem; }
+
+/* =============================================
+   NAVBAR
+============================================= */
+.school-website #navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1100;
+  padding: 0 2rem;
+  transition: all 0.4s ease;
+}
+.school-website #navbar .nav-inner {
+  max-width: 1280px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.25rem 0;
+  transition: all 0.4s ease;
+}
+.school-website #navbar.scrolled {
+  background: rgba(11,22,40,0.97);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 2px 40px rgba(0,0,0,0.3);
+}
+.school-website .nav-logo { display: flex; align-items: center; gap: 0.85rem; }
+.school-website .nav-logo-icon {
+  width: 48px; height: 48px; border-radius: 12px; object-fit: cover;
+  border: 2px solid rgba(255,255,255,0.2); background: #fcfcfc;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 1.4rem; color: var(--gold);
+  font-weight: 700;
+}
+.school-website .nav-logo-text { display: flex; flex-direction: column; }
+.school-website .nav-logo-name { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--white); line-height: 1.1; }
+.school-website .nav-logo-tag { font-size: 0.65rem; color: var(--gold-light); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+.school-website .nav-links { display: flex; align-items: center; gap: 0.25rem; }
+.school-website .nav-links > li { position: relative; }
+.school-website .nav-links > li > a {
+  position: relative; padding: 0.5rem 0.9rem; color: rgba(255,255,255,0.85); font-size: 0.88rem; font-weight: 500;
+  border-radius: 6px; transition: color 0.25s ease, background 0.25s ease; display: flex; align-items: center; gap: 0.3rem;
+}
+.school-website .nav-links > li > a::after {
+  content: ''; position: absolute; left: 0; right: 0; top: 100%; height: 18px;
+}
+.school-website .nav-links > li > a:hover { color: var(--gold-light); background: rgba(255,255,255,0.08); }
+.school-website .nav-links > li > a.active { color: var(--gold-light); }
+.school-website .dropdown {
+  position: absolute; top: calc(100% + 10px); left: 0;
+  background: var(--navy-mid); border: 1px solid var(--glass-border);
+  border-radius: 12px; min-width: 200px; padding: 0.5rem;
+  opacity: 0; visibility: hidden;
+  transform: translate3d(0, -12px, 0) scale(0.97);
+  transform-origin: top center; pointer-events: none;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  transition: opacity 0.32s cubic-bezier(0.4,0,0.2,1), transform 0.42s cubic-bezier(0.22,1,0.36,1), visibility 0s linear 0.45s;
+}
+.school-website .nav-links > li:hover .dropdown {
+  opacity: 1; visibility: visible; transform: translate3d(0,0,0) scale(1); pointer-events: auto;
+  transition: opacity 0.3s cubic-bezier(0.4,0,0.2,1), transform 0.42s cubic-bezier(0.22,1,0.36,1), visibility 0s linear 0s;
+}
+.school-website .dropdown a { display: block; padding: 0.6rem 1rem; color: rgba(255,255,255,0.8); font-size: 0.85rem; border-radius: 8px; transition: background 0.2s ease, color 0.2s ease, transform 0.22s ease; }
+.school-website .dropdown a:hover { background: rgba(201,168,76,0.12); color: var(--gold-light); transform: translateX(3px); }
+.school-website .nav-cta { display: flex; align-items: center; gap: 0.75rem; }
+.school-website .nav-burger {
+  display: none; position: relative; width: 44px; height: 44px; padding: 0; cursor: pointer;
+  border: none; background: transparent; color: rgba(255,255,255,0.92); z-index: 1110; flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.school-website .nav-burger span {
+  position: absolute; left: 10px; right: 10px; height: 2px; background: currentColor; border-radius: 2px;
+  transition: transform 0.42s cubic-bezier(0.22,1,0.36,1), top 0.42s cubic-bezier(0.22,1,0.36,1), opacity 0.26s ease;
+}
+.school-website .nav-burger span:nth-child(1) { top: 14px; }
+.school-website .nav-burger span:nth-child(2) { top: 21px; }
+.school-website .nav-burger span:nth-child(3) { top: 28px; }
+.school-website .nav-burger.open span:nth-child(1) { top: 21px; transform: rotate(45deg); }
+.school-website .nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.school-website .nav-burger.open span:nth-child(3) { top: 21px; transform: rotate(-45deg); }
+.school-website .mobile-menu {
+  position: fixed; top: 0; right: -100%; width: min(360px, 100%); height: 100dvh;
+  background: var(--navy); z-index: 1090; padding: 5rem 1.25rem 2rem;
+  transition: right 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+  overflow-y: auto; box-shadow: -20px 0 60px rgba(0,0,0,0.5);
+}
+.school-website .mobile-menu.open { right: 0; }
+.school-website .mobile-menu a { display: block; padding: 0.85rem 0; color: rgba(255,255,255,0.85); font-size: 1rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.08); transition: color 0.2s; }
+.school-website .mobile-menu a:hover { color: var(--gold-light); }
+.school-website .mobile-menu-cta { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.school-website .mobile-menu-cta .btn { width: 100%; justify-content: center; }
+.school-website .sw-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1080; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+.school-website .sw-overlay.open { opacity: 1; visibility: visible; }
+
+/* =============================================
+   HERO
+============================================= */
+.school-website #hero {
+  min-height: 100vh; position: relative; display: flex; align-items: center;
+  overflow: hidden; background: var(--navy);
+}
+.school-website .hero-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 80% at 60% 50%, rgba(30,48,96,0.8) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 20% 80%, rgba(201,168,76,0.08) 0%, transparent 60%),
+    linear-gradient(135deg, #060e1e 0%, #0B1628 40%, #132040 100%);
+}
+.school-website .hero-grid {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent);
+}
+.school-website .hero-orb { position: absolute; border-radius: 50%; filter: blur(80px); animation: sw-float 8s ease-in-out infinite; }
+.school-website .hero-orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%); top: -200px; right: -100px; }
+.school-website .hero-orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(30,48,96,0.6) 0%, transparent 70%); bottom: -100px; left: 10%; animation-delay: -4s; }
+@keyframes sw-float { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-30px) scale(1.05); } }
+
+.school-website .hero-content { position: relative; z-index: 2; padding: 160px 0 100px; }
+.school-website .hero-grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; min-width: 0; }
+.school-website .hero-grid-layout > * { min-width: 0; }
+.school-website .hero-badge {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 50px; padding: 0.45rem 1.1rem; margin-bottom: 1.5rem;
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-light);
+}
+.school-website .hero-badge span { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: sw-pulse 2s ease-in-out infinite; }
+@keyframes sw-pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+.school-website .hero-heading { margin-bottom: 1.5rem; }
+.school-website .hero-heading em { font-style: italic; color: var(--gold-light); }
+.school-website .hero-sub { color: rgba(255,255,255,0.65); margin-bottom: 2.5rem; max-width: 520px; font-size: 1.1rem; line-height: 1.7; }
+.school-website .hero-btns { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
+.school-website .hero-trust { display: flex; align-items: center; gap: 1.5rem; }
+.school-website .hero-trust-stars { color: var(--gold); font-size: 0.9rem; }
+.school-website .hero-trust-text { font-size: 0.85rem; color: rgba(255,255,255,0.55); }
+.school-website .hero-trust-text strong { color: rgba(255,255,255,0.85); }
+.school-website .hero-stats-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(201,168,76,0.15);
+  border-radius: var(--radius); padding: 2.5rem; backdrop-filter: blur(20px); position: relative; overflow: hidden;
+}
+.school-website .hero-stats-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 60%); pointer-events: none;
+}
+.school-website .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.school-website .stat-item { text-align: center; }
+.school-website .stat-number { font-family: var(--font-display); font-size: 3rem; font-weight: 700; color: var(--gold-light); line-height: 1; }
+.school-website .stat-number span { font-size: 1.5rem; }
+.school-website .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 0.35rem; letter-spacing: 0.05em; text-transform: uppercase; }
+.school-website .scroll-indicator {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  color: rgba(255,255,255,0.4); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+  animation: sw-bounce 2.5s ease-in-out infinite;
+}
+@keyframes sw-bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+
+/* =============================================
+   ANNOUNCEMENT BAR
+============================================= */
+.school-website .announcement-bar {
+  background: linear-gradient(90deg, var(--navy-mid), var(--navy-light));
+  border-bottom: 1px solid rgba(201,168,76,0.2); padding: 0.7rem 0; overflow: hidden;
+}
+.school-website .marquee-track { display: flex; align-items: center; gap: 3rem; animation: sw-marquee 30s linear infinite; white-space: nowrap; }
+.school-website .marquee-track:hover { animation-play-state: paused; }
+.school-website .marquee-item { font-size: 0.82rem; color: rgba(255,255,255,0.75); display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
+.school-website .marquee-item .dot { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+@keyframes sw-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* =============================================
+   ABOUT
+============================================= */
+.school-website #about { background: var(--cream); }
+.school-website .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+.school-website .about-img-wrap { position: relative; }
+.school-website .about-main-img {
+  width: 100%; aspect-ratio: 4/5; object-fit: cover;
+  border-radius: 20px; position: relative; z-index: 1;
+  background: linear-gradient(135deg, var(--navy-mid), var(--navy-light));
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.school-website .about-main-img .img-placeholder { font-family: var(--font-display); font-size: 5rem; color: var(--gold); opacity: 0.3; }
+.school-website .about-float-card {
+  position: absolute; bottom: -2rem; right: -2rem; z-index: 2;
+  background: var(--white); border-radius: 16px; padding: 1.5rem 2rem;
+  box-shadow: 0 20px 60px rgba(11,22,40,0.15); display: flex; align-items: center; gap: 1.25rem;
+}
+.school-website .about-float-icon { width: 52px; height: 52px; background: linear-gradient(135deg, var(--gold), var(--gold-light)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+.school-website .about-float-num { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--navy); line-height: 1; }
+.school-website .about-float-label { font-size: 0.8rem; color: var(--slate); }
+.school-website .about-accent-bar { position: absolute; top: -1.5rem; left: -1.5rem; width: 120px; height: 120px; border: 2px solid var(--gold); border-radius: 16px; opacity: 0.2; z-index: 0; }
+.school-website .about-pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 2rem; }
+.school-website .about-pillar { display: flex; align-items: flex-start; gap: 0.75rem; }
+.school-website .about-pillar-icon { width: 36px; height: 36px; background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.08)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem; }
+.school-website .about-pillar-name { font-weight: 600; font-size: 0.9rem; color: var(--navy); }
+.school-website .about-pillar-desc { font-size: 0.82rem; color: var(--slate); margin-top: 0.2rem; }
+
+/* =============================================
+   WHY CHOOSE US
+============================================= */
+.school-website #why { background: var(--navy); }
+.school-website .why-header { text-align: center; margin-bottom: 4rem; }
+.school-website .why-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+.school-website .why-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(201,168,76,0.1);
+  border-radius: var(--radius); padding: 2rem 1.75rem;
+  transition: var(--transition); cursor: default; position: relative; overflow: hidden;
+}
+.school-website .why-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, transparent 60%); opacity: 0; transition: opacity 0.4s;
+}
+.school-website .why-card:hover { transform: translateY(-6px); border-color: rgba(201,168,76,0.3); box-shadow: var(--shadow-gold); }
+.school-website .why-card:hover::before { opacity: 1; }
+.school-website .why-card-icon { font-size: 2rem; margin-bottom: 1.25rem; display: block; }
+.school-website .why-card-title { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; color: var(--white); margin-bottom: 0.5rem; }
+.school-website .why-card-desc { font-size: 0.88rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+.school-website .why-card-num { position: absolute; top: 1.5rem; right: 1.75rem; font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; color: rgba(201,168,76,0.07); }
+
+/* =============================================
+   ACADEMICS
+============================================= */
+.school-website #academics { background: var(--cream); }
+.school-website .academics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.school-website .class-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; margin-top: 2rem; }
+.school-website .class-tab { padding: 0.5rem 1.25rem; border-radius: 50px; font-size: 0.85rem; font-weight: 500; border: 1.5px solid rgba(11,22,40,0.2); color: var(--navy); cursor: pointer; transition: all 0.25s; background: transparent; font-family: var(--font-body); }
+.school-website .class-tab.active, .school-website .class-tab:hover { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.school-website .academics-features { display: grid; gap: 1rem; }
+.school-website .acad-feature { display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem; background: var(--white); border-radius: 12px; box-shadow: 0 2px 16px rgba(11,22,40,0.06); transition: all 0.25s; }
+.school-website .acad-feature:hover { transform: translateX(4px); box-shadow: 0 4px 24px rgba(11,22,40,0.1); }
+.school-website .acad-feature-icon { width: 44px; height: 44px; background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.08)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+.school-website .acad-feature-title { font-weight: 600; color: var(--navy); font-size: 0.95rem; }
+.school-website .acad-feature-desc { font-size: 0.82rem; color: var(--slate); margin-top: 0.2rem; }
+.school-website .academics-visual {
+  background: linear-gradient(135deg, var(--navy), var(--navy-mid)); border-radius: 20px;
+  padding: 3rem; position: sticky; top: 100px;
+}
+.school-website .acad-result-title { font-family: var(--font-display); font-size: 1.5rem; color: var(--white); margin-bottom: 2rem; text-align: center; }
+.school-website .result-bars { display: grid; gap: 1.5rem; }
+.school-website .result-bar-label { display: flex; justify-content: space-between; font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-bottom: 0.5rem; }
+.school-website .result-bar-track { height: 8px; background: rgba(255,255,255,0.08); border-radius: 50px; overflow: hidden; }
+.school-website .result-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 50px; width: 0; transition: width 1.5s cubic-bezier(0.25,0.46,0.45,0.94); }
+.school-website .result-highlights { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+.school-website .result-highlight { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 1.25rem; text-align: center; }
+.school-website .result-highlight-num { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--gold-light); }
+.school-website .result-highlight-label { font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 0.25rem; }
+
+/* =============================================
+   ADMISSION
+============================================= */
+.school-website #admission { background: linear-gradient(135deg, var(--navy-mid) 0%, var(--navy) 100%); position: relative; overflow: hidden; }
+.school-website #admission::before { content: ''; position: absolute; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%); }
+.school-website .admission-header { text-align: center; margin-bottom: 4rem; }
+.school-website .admission-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-bottom: 4rem; position: relative; }
+.school-website .admission-steps::before { content: ''; position: absolute; top: 28px; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-light), transparent); opacity: 0.3; z-index: 0; }
+.school-website .adm-step { text-align: center; position: relative; z-index: 1; }
+.school-website .adm-step-num { width: 56px; height: 56px; background: linear-gradient(135deg, var(--gold), var(--gold-light)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--navy); }
+.school-website .adm-step-title { font-size: 0.9rem; font-weight: 600; color: var(--white); margin-bottom: 0.35rem; }
+.school-website .adm-step-desc { font-size: 0.78rem; color: rgba(255,255,255,0.45); }
+.school-website .admission-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+.school-website .adm-docs h3 { font-family: var(--font-display); font-size: 1.5rem; color: var(--white); margin-bottom: 1.5rem; }
+.school-website .adm-doc-list { display: grid; gap: 0.85rem; }
+.school-website .adm-doc-item { display: flex; align-items: flex-start; gap: 0.75rem; }
+.school-website .adm-doc-check { width: 24px; height: 24px; background: linear-gradient(135deg, var(--gold), var(--gold-light)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--navy); font-weight: 700; flex-shrink: 0; }
+.school-website .adm-doc-text { font-size: 0.9rem; color: rgba(255,255,255,0.8); }
+.school-website .adm-form-card { background: rgba(255,255,255,0.06); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 2.5rem; backdrop-filter: blur(20px); }
+.school-website .adm-form-card h3 { font-family: var(--font-display); font-size: 1.5rem; color: var(--white); margin-bottom: 0.5rem; }
+.school-website .adm-form-card p { font-size: 0.88rem; color: rgba(255,255,255,0.5); margin-bottom: 1.5rem; }
+.school-website .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.school-website .form-group { margin-bottom: 1rem; }
+.school-website .form-group label { display: block; font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 0.4rem; letter-spacing: 0.03em; }
+.school-website .form-group input, .school-website .form-group select, .school-website .form-group textarea {
+  width: 100%; padding: 0.75rem 1rem; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12); background: rgba(0,0,0,0.2);
+  color: var(--white); font-size: 0.92rem; transition: border-color 0.2s, box-shadow 0.2s; font-family: var(--font-body);
+}
+.school-website .form-group input::placeholder, .school-website .form-group textarea::placeholder { color: rgba(255,255,255,0.35); }
+.school-website .form-group input:focus, .school-website .form-group select:focus, .school-website .form-group textarea:focus {
+  outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+}
+.school-website .form-group select option { background: var(--navy-mid); color: var(--white); }
+.school-website .form-group textarea { resize: vertical; min-height: 120px; }
+
+/* =============================================
+   FACILITIES
+============================================= */
+.school-website #facilities { background: var(--cream); }
+.school-website .facilities-header { text-align: center; margin-bottom: 3.5rem; }
+.school-website .facilities-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+.school-website .facility-card { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 4px 24px rgba(11,22,40,0.07); transition: var(--transition); }
+.school-website .facility-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(11,22,40,0.14); }
+.school-website .facility-img { height: 220px; overflow: hidden; background: var(--navy-mid); }
+.school-website .facility-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+.school-website .facility-card:hover .facility-img img { transform: scale(1.06); }
+.school-website .facility-body { padding: 1.5rem; }
+.school-website .facility-title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem; }
+.school-website .facility-desc { font-size: 0.88rem; color: var(--slate); line-height: 1.6; }
+
+/* =============================================
+   FACULTY
+============================================= */
+.school-website #faculty { background: var(--navy); }
+.school-website .faculty-header { text-align: center; margin-bottom: 3rem; }
+.school-website .principal-card {
+  display: grid; grid-template-columns: 280px 1fr; gap: 3rem; align-items: center;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 20px; padding: 3rem; margin-bottom: 3rem; overflow: hidden; position: relative;
+}
+.school-website .principal-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, transparent 60%); pointer-events: none; }
+.school-website .principal-photo { border-radius: 16px; overflow: hidden; aspect-ratio: 3/4; }
+.school-website .principal-photo img { width: 100%; height: 100%; object-fit: cover; }
+.school-website .principal-quote { font-family: var(--font-display); font-size: 1.3rem; font-style: italic; color: rgba(255,255,255,0.85); line-height: 1.6; }
+.school-website .principal-quote::before { content: '"'; font-size: 3rem; color: var(--gold); line-height: 0; vertical-align: -0.4em; margin-right: 0.2rem; }
+.school-website .principal-name { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--white); }
+.school-website .principal-title { font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-top: 0.35rem; }
+.school-website .principal-actions { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+.school-website .teachers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+.school-website .teacher-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(201,168,76,0.08); border-radius: var(--radius); overflow: hidden; text-align: center; transition: var(--transition); }
+.school-website .teacher-card:hover { transform: translateY(-4px); border-color: rgba(201,168,76,0.25); }
+.school-website .teacher-photo { height: 200px; overflow: hidden; }
+.school-website .teacher-photo img { width: 100%; height: 100%; object-fit: cover; }
+.school-website .teacher-name { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--white); margin: 1rem 1rem 0.25rem; }
+.school-website .teacher-dept { font-size: 0.85rem; color: var(--gold-light); font-weight: 500; margin-bottom: 0.25rem; }
+.school-website .teacher-qual { font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-bottom: 1rem; }
+
+/* =============================================
+   STUDENT LIFE
+============================================= */
+.school-website #student-life { background: var(--cream); }
+.school-website .student-life-header { text-align: center; margin-bottom: 3rem; }
+.school-website .life-masonry { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: auto; gap: 1.25rem; }
+.school-website .life-card { border-radius: var(--radius); overflow: hidden; position: relative; cursor: pointer; }
+.school-website .life-card-img { width: 100%; height: 280px; overflow: hidden; }
+.school-website .life-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+.school-website .life-card:hover .life-card-img img { transform: scale(1.08); }
+.school-website .life-card-overlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top, rgba(11,22,40,0.9) 0%, transparent 100%);
+  padding: 2rem 1.5rem 1.5rem;
+}
+.school-website .life-card-title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; color: var(--white); margin-bottom: 0.25rem; }
+.school-website .life-card-sub { font-size: 0.8rem; color: rgba(255,255,255,0.7); }
+.school-website .life-card-1 { grid-column: 1; grid-row: 1; }
+.school-website .life-card-2 { grid-column: 2; grid-row: 1; }
+.school-website .life-card-3 { grid-column: 3; grid-row: 1; }
+.school-website .life-card-4 { grid-column: 1; grid-row: 2; }
+.school-website .life-card-5 { grid-column: 2; grid-row: 2; }
+.school-website .life-card-6 { grid-column: 3; grid-row: 2; }
+
+/* =============================================
+   GALLERY
+============================================= */
+.school-website #gallery { background: var(--navy); }
+.school-website .gallery-header { text-align: center; margin-bottom: 2rem; }
+.school-website .gallery-filters { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
+.school-website .gallery-filter { padding: 0.5rem 1.25rem; border-radius: 50px; font-size: 0.85rem; font-weight: 500; border: 1.5px solid rgba(201,168,76,0.25); color: rgba(255,255,255,0.65); cursor: pointer; transition: all 0.25s; }
+.school-website .gallery-filter.active, .school-website .gallery-filter:hover { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+.school-website .gallery-masonry { columns: 4; gap: 0.75rem; }
+.school-website .gallery-item { break-inside: avoid; margin-bottom: 0.75rem; border-radius: 12px; overflow: hidden; cursor: pointer; }
+.school-website .gallery-item-img { overflow: hidden; }
+.school-website .gallery-item-img img { width: 100%; height: auto; display: block; transition: transform 0.4s ease; }
+.school-website .gallery-item:hover .gallery-item-img img { transform: scale(1.05); }
+.school-website .gallery-item[data-visible="false"] { display: none; }
+.school-website .gallery-lightbox {
+  position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,0.92); display: none;
+  align-items: center; justify-content: center; padding: 2rem;
+}
+.school-website .gallery-lightbox.open { display: flex; }
+.school-website .gallery-lightbox-inner { position: relative; max-width: 90vw; max-height: 90vh; }
+.school-website .gallery-lightbox-inner img { max-width: 90vw; max-height: 85vh; border-radius: 12px; object-fit: contain; }
+.school-website .gallery-lightbox-close {
+  position: absolute; top: -2rem; right: 0; background: transparent; border: none;
+  color: var(--white); font-size: 2rem; cursor: pointer; line-height: 1;
+}
+
+/* =============================================
+   TESTIMONIALS
+============================================= */
+.school-website #testimonials { background: var(--cream); }
+.school-website .testimonials-header { text-align: center; margin-bottom: 2.5rem; }
+.school-website .testimonials-slider { overflow: hidden; }
+.school-website .testimonials-track { display: flex; transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); }
+.school-website .testimonial-card { min-width: 100%; padding: 0 1rem; }
+.school-website .testimonial-inner {
+  background: var(--white); border-radius: 20px; padding: 3rem;
+  box-shadow: 0 8px 40px rgba(11,22,40,0.08); text-align: center; max-width: 700px; margin: 0 auto;
+}
+.school-website .testimonial-stars { color: var(--gold); font-size: 1.2rem; letter-spacing: 0.2rem; margin-bottom: 1.5rem; }
+.school-website .testimonial-text { font-size: 1.05rem; line-height: 1.75; color: var(--text-body); font-style: italic; margin-bottom: 2rem; }
+.school-website .testimonial-author-photo { width: 64px; height: 64px; border-radius: 50%; overflow: hidden; margin: 0 auto 0.75rem; border: 3px solid var(--gold-pale); }
+.school-website .testimonial-author-photo img { width: 100%; height: 100%; object-fit: cover; }
+.school-website .testimonial-author-name { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--navy); }
+.school-website .testimonial-author-role { font-size: 0.82rem; color: var(--slate); margin-top: 0.2rem; }
+.school-website .slider-controls { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-top: 2rem; }
+.school-website .slider-btn { background: var(--white); border: 2px solid rgba(11,22,40,0.15); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem; color: var(--navy); transition: all 0.25s; }
+.school-website .slider-btn:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.school-website .slider-dots { display: flex; gap: 0.5rem; }
+.school-website .slider-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(11,22,40,0.2); border: none; cursor: pointer; transition: all 0.25s; padding: 0; }
+.school-website .slider-dot.active { background: var(--gold); transform: scale(1.3); }
+
+/* =============================================
+   NOTICES
+============================================= */
+.school-website #notices { background: var(--navy); }
+.school-website .notices-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+.school-website .notice-col h3 { font-family: var(--font-display); font-size: 1.2rem; color: var(--white); margin-bottom: 1.5rem; }
+.school-website .notice-list { display: grid; gap: 0; }
+.school-website .notice-item { display: flex; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.school-website .notice-date { text-align: center; flex-shrink: 0; width: 50px; }
+.school-website .notice-day { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--gold-light); line-height: 1; }
+.school-website .notice-month { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); }
+.school-website .notice-title { font-size: 0.9rem; color: rgba(255,255,255,0.8); line-height: 1.5; }
+.school-website .notice-cat { font-size: 0.72rem; color: var(--gold); margin-top: 0.25rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* =============================================
+   CONTACT
+============================================= */
+.school-website #contact { background: var(--cream); }
+.school-website .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.school-website .contact-details { margin-top: 2rem; display: grid; gap: 1.25rem; }
+.school-website .contact-detail { display: flex; gap: 1rem; align-items: flex-start; }
+.school-website .contact-detail-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 0.1rem; }
+.school-website .contact-detail-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--slate); margin-bottom: 0.2rem; }
+.school-website .contact-detail-value { font-size: 0.95rem; color: var(--navy); font-weight: 500; }
+.school-website .map-placeholder { margin-top: 2rem; border-radius: 16px; overflow: hidden; border: 2px solid rgba(11,22,40,0.08); height: 250px; }
+.school-website .map-placeholder iframe { width: 100%; height: 100%; border: none; }
+.school-website .contact-form-card { background: var(--navy); border-radius: 20px; padding: 2.5rem; }
+.school-website .contact-form-card h3 { font-family: var(--font-display); font-size: 1.5rem; color: var(--white); margin-bottom: 0.5rem; }
+.school-website .contact-form-card > p { font-size: 0.88rem; color: rgba(255,255,255,0.5); margin-bottom: 1.5rem; }
+
+/* =============================================
+   FOOTER
+============================================= */
+.school-website footer { background: var(--navy); }
+.school-website .footer-main { padding: 5rem 0 3rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.school-website .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr; gap: 3rem; }
+.school-website .footer-brand p { font-size: 0.88rem; color: rgba(255,255,255,0.45); line-height: 1.7; margin-top: 1rem; }
+.school-website .footer-social { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+.school-website .social-btn { width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; transition: all 0.25s; text-decoration: none; }
+.school-website .social-btn:hover { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+.school-website .footer-col h4 { font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.9); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.25rem; }
+.school-website .footer-links { display: flex; flex-direction: column; gap: 0.6rem; }
+.school-website .footer-links a { font-size: 0.88rem; color: rgba(255,255,255,0.45); transition: color 0.2s; }
+.school-website .footer-links a:hover { color: var(--gold-light); }
+.school-website .footer-newsletter { display: flex; flex-direction: column; gap: 0.75rem; }
+.school-website .footer-newsletter input { width: 100%; padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); color: var(--white); font-size: 0.88rem; font-family: var(--font-body); }
+.school-website .footer-newsletter input::placeholder { color: rgba(255,255,255,0.3); }
+.school-website .footer-newsletter input:focus { outline: none; border-color: var(--gold); }
+.school-website .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 0; gap: 1rem; }
+.school-website .footer-bottom p { font-size: 0.82rem; color: rgba(255,255,255,0.3); }
+.school-website .footer-bottom-links { display: flex; gap: 1.5rem; }
+.school-website .footer-bottom-links a { font-size: 0.82rem; color: rgba(255,255,255,0.35); transition: color 0.2s; }
+.school-website .footer-bottom-links a:hover { color: var(--gold-light); }
+
+/* =============================================
+   WHATSAPP FLOAT
+============================================= */
+.school-website .whatsapp-float { position: fixed; bottom: 2rem; right: 2rem; z-index: 999; }
+.school-website .whatsapp-btn {
+  width: 56px; height: 56px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 24px rgba(37,211,102,0.35); transition: all 0.3s; color: white; font-size: 1.75rem; text-decoration: none;
+  animation: sw-wpPulse 2s ease-in-out infinite;
+}
+.school-website .whatsapp-btn:hover { transform: scale(1.12); box-shadow: 0 12px 32px rgba(37,211,102,0.5); }
+@keyframes sw-wpPulse { 0%,100% { box-shadow: 0 8px 24px rgba(37,211,102,0.35); } 50% { box-shadow: 0 8px 36px rgba(37,211,102,0.6); } }
+
+/* =============================================
+   REVEAL ANIMATIONS
+============================================= */
+.school-website .reveal, .school-website .reveal-left, .school-website .reveal-right {
+  opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.school-website .reveal-left { transform: translateX(-30px); }
+.school-website .reveal-right { transform: translateX(30px); }
+.school-website .reveal.revealed, .school-website .reveal-left.revealed, .school-website .reveal-right.revealed {
+  opacity: 1; transform: none;
+}
+.school-website .reveal-delay-1 { transition-delay: 0.1s; }
+.school-website .reveal-delay-2 { transition-delay: 0.2s; }
+.school-website .reveal-delay-3 { transition-delay: 0.3s; }
+.school-website .reveal-delay-4 { transition-delay: 0.4s; }
+
+/* =============================================
+   RESPONSIVE
+============================================= */
+@media (max-width: 1100px) {
+  .school-website .why-cards { grid-template-columns: repeat(2, 1fr); }
+  .school-website .teachers-grid { grid-template-columns: repeat(2, 1fr); }
+  .school-website .gallery-masonry { columns: 3; }
+}
+@media (max-width: 900px) {
+  .school-website .hero-grid-layout { grid-template-columns: 1fr; }
+  .school-website .hero-stats-card { display: none; }
+  .school-website .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .school-website .about-float-card { position: relative; bottom: auto; right: auto; margin-top: 1rem; }
+  .school-website .academics-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .school-website .admission-steps { grid-template-columns: repeat(3, 1fr); }
+  .school-website .admission-bottom { grid-template-columns: 1fr; }
+  .school-website .facilities-grid { grid-template-columns: repeat(2, 1fr); }
+  .school-website .principal-card { grid-template-columns: 1fr; }
+  .school-website .teachers-grid { grid-template-columns: repeat(2, 1fr); }
+  .school-website .life-masonry { grid-template-columns: repeat(2, 1fr); }
+  .school-website .life-card-5, .school-website .life-card-6 { grid-column: auto; grid-row: auto; }
+  .school-website .gallery-masonry { columns: 2; }
+  .school-website .notices-grid { grid-template-columns: 1fr; }
+  .school-website .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .school-website .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .school-website .nav-links, .school-website .nav-cta { display: none; }
+  .school-website .nav-burger { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+}
+@media (max-width: 600px) {
+  .school-website .hero-content { padding: 120px 0 80px; }
+  .school-website .why-cards { grid-template-columns: 1fr; }
+  .school-website .admission-steps { grid-template-columns: 1fr; }
+  .school-website .facilities-grid { grid-template-columns: 1fr; }
+  .school-website .teachers-grid { grid-template-columns: 1fr; }
+  .school-website .life-masonry { grid-template-columns: 1fr; }
+  .school-website .gallery-masonry { columns: 2; }
+  .school-website .footer-grid { grid-template-columns: 1fr; }
+  .school-website .result-highlights { grid-template-columns: 1fr 1fr; }
+  .school-website .about-pillars { grid-template-columns: 1fr; }
+  .school-website .form-row { grid-template-columns: 1fr; }
+}

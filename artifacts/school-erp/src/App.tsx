@@ -1,5 +1,7 @@
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import SchoolWebsite from "@/pages/SchoolWebsite";
+import StudentPortal from "@/pages/StudentPortal";
 import HomePage from "@/pages/HomePage";
 import AdminLoginPage from "@/pages/AdminLoginPage";
 import TeacherLoginPage from "@/pages/TeacherLoginPage";
@@ -22,7 +24,9 @@ function NotFound() {
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={HomePage} />
+      <Route path="/" component={SchoolWebsite} />
+      <Route path="/student/login" component={StudentPortal} />
+      <Route path="/erp" component={HomePage} />
       <Route path="/admin/login" component={AdminLoginPage} />
       <Route path="/admin/dashboard" component={AdminPrincipalDashboard} />
       <Route path="/teacher/login" component={TeacherLoginPage} />
